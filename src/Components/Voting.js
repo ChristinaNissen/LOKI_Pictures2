@@ -27,7 +27,7 @@ const Voting = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!selected) {
-      setError("Please select a candidate before casting your vote");
+      setError("Please select a candidate");
       return;
     }
     setError("");
@@ -101,7 +101,7 @@ const Voting = () => {
             className="button next-button"
             form="votingForm"
           >
-            Cast Vote
+            Cast vote
           </button>
         </div>
         {error && (

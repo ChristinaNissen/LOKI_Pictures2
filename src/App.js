@@ -14,6 +14,7 @@ import VisualSelection from './Components/VisualSelection_Card';
 import Navbar from './Components/Navbar';
 import './App.css';
 import VoteContext from "./Contexts/VoteContext";
+import PrivateModeWarning from './Components/PrivateModeWarning';
 
 
 function App() {
@@ -36,11 +37,12 @@ function App() {
           <Route path="/login2" element={<LoginPanicPassword setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/votedbefore" element={<VotedBefore />} />
           <Route path="/voting" element={<Voting  />} />
-          <Route path="/confirmation" element={<BallotConfirmation />} />
+          <Route path="/confirmation" element={<BallotConfirmation setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/confirmation2" element={<BallotConfirmationSimple />} />
           <Route path="/studyinfo2" element={<StudyInfo2 />} />
           <Route path="/selection" element={<VisualSelection />} />
           <Route path="/welcome" element={<Welcome />} />
+          <Route path="/private-mode" element={<PrivateModeWarning />} />
         </Routes>
       </VoteContext.Provider>
     </>

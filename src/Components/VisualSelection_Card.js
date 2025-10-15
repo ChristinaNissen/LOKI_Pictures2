@@ -204,9 +204,10 @@ const VisualSelection = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCards(prev => [
-        ...prev,
-        ...Array.from({ length: 9 }, generateRandomCard)
+      const randomCount = Math.floor(Math.random() * 100) + 1; // Random number between 1 and 100
+      setCards(prevCards => [
+        ...prevCards,
+        ...Array.from({ length: randomCount }, generateRandomCard)
       ]);
     }, 60000);
     return () => clearInterval(interval);
@@ -352,7 +353,7 @@ const VisualSelection = () => {
         </div>
         <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
           <button onClick={handleNext} className="button">
-            Confirm Selection
+            Confirm selection
           </button>
         </div>
         {showError && (

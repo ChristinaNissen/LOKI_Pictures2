@@ -57,10 +57,17 @@
   /* No extra right margin here since the gap on navbar-right handles spacing */
 }
 
+.navbar-link:hover {
+  background: var(--primary-yellow-dark);
+  transform: scale(1.1); /* Example effect */
+  transition: transform 0.2s ease;
+}
+
 .navbar-icon {
   vertical-align: middle;
   margin-right: 4px;
 }
+
 
 .navbar-text {
   font-size: 1rem;
@@ -70,6 +77,12 @@
 .navbar-profile {
   position: relative;
   cursor: pointer;
+}
+
+.navbar-profile:hover {
+  background: var(--primary-yellow-dark);
+  transform: scale(1.1); /* Example effect */
+  transition: transform 0.2s ease;
 }
 
 .profile-dropdown {

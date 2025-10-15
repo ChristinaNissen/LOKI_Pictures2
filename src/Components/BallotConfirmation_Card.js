@@ -147,7 +147,7 @@ function getEmojiGridConfig(n) {
   }
 }
 
-const BallotConfirmation = ({ type = "card", ballotNumber = 12345 }) => {
+const BallotConfirmation = ({ type = "card", ballotNumber = 12345, isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const { userSelectedYes } = useContext(VoteContext);
@@ -169,6 +169,12 @@ const BallotConfirmation = ({ type = "card", ballotNumber = 12345 }) => {
   const wordRef = randomWords[Math.floor(Math.random() * randomWords.length)];
   const numberOfEmojis = Math.floor(Math.random() * 10) + 1; // 1 to 10
   const config = getEmojiGridConfig(numberOfEmojis);
+
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    navigate("/welcome"); // Navigate to welcome page on logout
+  };
 
   return (
     <div className="page-wrapper">
@@ -250,7 +256,7 @@ const BallotConfirmation = ({ type = "card", ballotNumber = 12345 }) => {
             </div>
           </div>
         </div>
-         <button className="button" style={{ marginTop: 40 }} onClick={() => navigate("/studyinfo2")}>
+         <button className="button" style={{ marginTop: 40 }} onClick={handleLogout}>
             Logout
          </button>
       </main>

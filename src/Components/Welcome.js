@@ -51,7 +51,7 @@ const Welcome = () => {
 				</div>
 				<button
 					className="button"
-					onClick={() => navigate("/login")}
+					onClick={() => navigate("/private-mode")}
 				>
 					Login to Vote
 				</button>
