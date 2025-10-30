@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Footer from "./Footer";
 import "./Voting-system.css";
 import "./BallotConfirmation.css";
-import image_visual from "../Images/alpaca.jpg";
+import word from "../Words/Sibling.png";
 import ProcessBar from "./ProcessBar.js"; 
 import { useLocation } from "react-router-dom";
 import VoteContext from "../Contexts/VoteContext";
 import { useContext } from "react";
 
-function BallotConfirmation_Picture(setIsLoggedIn) {
+function BallotConfirmation_Word(setIsLoggedIn) {
   const navigate = useNavigate();
   const location = useLocation();
   const { userSelectedYes } = useContext(VoteContext);
@@ -58,7 +58,7 @@ function BallotConfirmation_Picture(setIsLoggedIn) {
 
         <div className="card-wide">
          <h1 style={{ width: "100%", textAlign: "left", margin: "0 0 10px 40px" }}>
-            Picture 
+            Word 
           </h1>
 
             <div
@@ -67,20 +67,20 @@ function BallotConfirmation_Picture(setIsLoggedIn) {
   >
     <ul>
       <li>
-        You need to <strong>remember</strong> this picture if you want to update your vote later in the election.
+        You need to <strong>remember</strong> this word if you want to update your vote later in the election.
       </li>
       <li>
-        You should <strong>not share</strong> your picture with anyone, and you should <strong>not save</strong> it anywhere.
+        You should <strong>not share</strong> your word with anyone, and you should <strong>not save</strong> it anywhere.
       </li>
     </ul>
   </div>
           <img
-            src={image_visual}
+            src={word}
             alt="Visual ballot"
             style={{
               maxWidth: "100%",
               maxHeight: "400px",
-              marginTop: "30px",
+              marginTop: "0px",
               borderColor: "#c1bfbfff",
               borderWidth: "2px",
               borderStyle: "solid"
@@ -90,7 +90,7 @@ function BallotConfirmation_Picture(setIsLoggedIn) {
 
             <div className="confirmation-info">
                  <div style={{fontWeight: "bold", fontSize: "1.5rem", marginTop: "10px"}}>
-            Alpaca
+            Sibling
           </div>
               <div className="confirmation-datetime">{dateTime}</div>
               <div className="confirmation-candidate"> {votedCandidate}</div>
@@ -108,5 +108,5 @@ function BallotConfirmation_Picture(setIsLoggedIn) {
   );
 }
 
-export default BallotConfirmation_Picture;
+export default BallotConfirmation_Word;
 

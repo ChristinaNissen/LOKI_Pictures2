@@ -8,7 +8,9 @@ import VotedBefore from './Components/VotedBefore';
 import Voting from './Components/Voting';
 import BallotConfirmation from './Components/BallotConfirmation_Card';
 import BallotConfirmation_Picture from './Components/BallotConfirmation_Picture';
+import BallotConfirmation_Word from './Components/BallotConfirmation_Word';
 import VisualSelectionPicture from './Components/VisualSelection_Picture';
+import VisualSelectionWord from './Components/VisualSelection_Word';
 import StudyInfo2 from './Components/StudyInfo2';
 import StudyInfo3 from './Components/StudyInfo3';
 import VisualSelection from './Components/VisualSelection_Card';
@@ -48,11 +50,13 @@ function App() {
           <Route path="/votedbefore" element={<VotedBefore />} />
           <Route path="/voting" element={<Voting  />} />
           <Route path="/confirmation" element={<BallotConfirmation setIsLoggedIn={setIsLoggedIn} />} />
-          <Route path="/confirmation3" element={<BallotConfirmation_Picture setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/confirmation2" element={<BallotConfirmation_Picture setIsLoggedIn={setIsLoggedIn} />} />
+          <Route path="/confirmation3" element={<BallotConfirmation_Word setIsLoggedIn={setIsLoggedIn} />} />
           <Route path="/studyinfo2" element={<StudyInfo2 />} />
           <Route path="/studyinfo3" element={<StudyInfo3 />} />
           <Route path="/selection" element={<VisualSelection />} />
           <Route path="/selection2" element={<VisualSelectionPicture />} />
+          <Route path="/selection3" element={<VisualSelectionWord />} />
           <Route path="/welcome" element={<Welcome />} />
           <Route path="/private-mode" element={<PrivateModeWarning />} />
           <Route path="/help" element={<Help />} />

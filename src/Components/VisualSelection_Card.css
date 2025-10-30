@@ -185,3 +185,15 @@
   padding: 4px 8px;
   border-radius: 4px;
 }
+
+.card-label {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 1.1rem;
+  color: #222;
+  background: rgba(255,255,255,0.85);
+  border-radius: 4px;
+  padding: 0.2em 0.5em;
+  word-break: break-word;
+}

@@ -11,7 +11,7 @@ import Parse from "parse";
 const staticCard = {
   numberOfEmojis: 6,
   emojiRef: "😊",
-  colorRef: "#3887e7",
+  colorRef: "#0000ff",
   config: {
     columns: 2,
     rows: 3,
@@ -176,7 +176,9 @@ function getEmojiGridConfig(n) {
 function generateRandomCard() {
   const numberOfEmojis = Math.floor(Math.random() * 10) + 1;
   const emojiRef = randomEmojis[Math.floor(Math.random() * randomEmojis.length)];
-  const colorRef = generateDistinctColors(20)[Math.floor(Math.random() * 20)];
+  const colorObj = COLOR_LIST[Math.floor(Math.random() * COLOR_LIST.length)];
+  const colorRef = colorObj.hex;
+  const colorName = colorObj.name;
   const config = getEmojiGridConfig(numberOfEmojis);
   return { numberOfEmojis, emojiRef, colorRef, config };
 }
@@ -188,6 +190,95 @@ function getInitialCards() {
   randomCards.splice(insertIndex, 0, staticCard);
   return randomCards;
 }
+
+function getColorNameFromHSL(hsl) {
+  // hsl is a string like "hsl(120, 70%, 55%)"
+  const hue = parseInt(hsl.match(/\d+/)[0], 10);
+  if (hue >= 0 && hue < 30) return "Red";
+  if (hue >= 30 && hue < 60) return "Orange";
+  if (hue >= 60 && hue < 90) return "Yellow";
+  if (hue >= 90 && hue < 150) return "Green";
+  if (hue >= 150 && hue < 210) return "Cyan";
+  if (hue >= 210 && hue < 270) return "Blue";
+  if (hue >= 270 && hue < 330) return "Purple";
+  return "Red";
+}
+
+const COLOR_LIST = [
+  { name: "Red", hex: "#ff0000" },
+  { name: "Blue", hex: "#0000ff" },
+  { name: "Green", hex: "#28d328ff" },
+  { name: "Orange", hex: "#ffa500" },
+  { name: "Yellow", hex: "#fefe43ff" },
+  { name: "Purple", hex: "#800080" },
+  { name: "Brown", hex: "#a52a2a" },
+  { name: "Gray", hex: "#808080" },
+  { name: "Pink", hex: "#ffc0cb" },
+  { name: "Olive", hex: "#808000" },
+  { name: "Maroon", hex: "#800000" },
+  { name: "Violet", hex: "#ee82ee" },
+  { name: "Charcoal", hex: "#36454f" },
+  { name: "Magenta", hex: "#ff00ff" },
+  { name: "Bronze", hex: "#cd7f32" },
+  { name: "Cream", hex: "#fffdd0" },
+  { name: "Tan", hex: "#d2b48c" },
+  { name: "Teal", hex: "#008080" },
+  { name: "Mustard", hex: "#ffdb58" },
+  { name: "Navy Blue", hex: "#000080" },
+  { name: "Coral", hex: "#ff7f50" },
+  { name: "Burgundy", hex: "#800020" },
+  { name: "Lavender", hex: "#e6e6fa" },
+  { name: "Mauve", hex: "#e0b0ff" },
+  { name: "Cyan", hex: "#e0f7fa" },
+  { name: "Peach", hex: "#ffe5b4" },
+  { name: "Rust", hex: "#b7410e" },
+  { name: "Indigo", hex: "#4b0082" },
+  { name: "Ruby", hex: "#e0115f" },
+  { name: "Lime Green", hex: "#32cd32" },
+  { name: "Salmon", hex: "#fa8072" },
+  { name: "Azure", hex: "#007fff" },
+  { name: "Beige", hex: "#f5f5dc" },
+  { name: "Copper Rose", hex: "#996666" },
+  { name: "Turquoise", hex: "#40e0d0" },
+  { name: "Aqua", hex: "#00ffff" },
+  { name: "Mint", hex: "#3eb489" },
+  { name: "Sky Blue", hex: "#87ceeb" },
+  { name: "Crimson", hex: "#dc143c" },
+  { name: "Saffron", hex: "#f4c430" },
+  { name: "Lemon Yellow", hex: "#fff44f" },
+  { name: "Grapevine", hex: "#43254f" },
+  { name: "Fuschia", hex: "#ff00ff" },
+  { name: "Amber", hex: "#ffbf00" },
+  { name: "Sea Green", hex: "#2e8b57" },
+  { name: "Dark Green", hex: "#006400" },
+  { name: "Pearl", hex: "#eae0c8" },
+  { name: "Ivory", hex: "#fffff0" },
+  { name: "Tangerine", hex: "#f28500" },
+  { name: "Garnet", hex: "#733635" },
+  { name: "Cherry Red", hex: "#de3163" },
+  { name: "Emerald", hex: "#50c878" },
+  { name: "Brunette", hex: "#664238" },
+  { name: "Sapphire", hex: "#0f52ba" },
+  { name: "Lilac", hex: "#c8a2c8" },
+  { name: "Rosewood", hex: "#65000b" },
+  { name: "Arctic Blue", hex: "#0000ff" },
+  { name: "Ash", hex: "#808080" },
+  { name: "Mocha", hex: "#C0A392" },
+  { name: "Coffee Brown", hex: "#6f4e37" },
+  { name: "Umber", hex: "#635147" }
+];
+
+const blackTextColors = [
+  "Ivory",
+  "Beige",
+  "Pearl",
+  "Yellow",
+  "Cream",
+  "Lavender",
+  "Lemon Yellow",
+  "Cyan",
+  "Peach"
+];
 
 const VisualSelection = () => {
   const navigate = useNavigate();
@@ -289,58 +380,83 @@ const VisualSelection = () => {
             <div className="visual-selection-grid" style={{ marginTop: "20px" }}>
               {pagedCards.map((card, idx) => {
                 const globalIdx = page * PAGE_SIZE + idx;
+                // Find the color object for this card
+                const colorObj = COLOR_LIST.find(c => c.hex.toLowerCase() === card.colorRef.toLowerCase()) || { name: "Color", hex: card.colorRef };
+                const emojiNames = {
+                  "😊": "smiling face",
+                  "🐑": "sheep",
+                  "⭐": "star",
+                  // ...add all emojis you use
+                };
+                const emojiName = emojiNames[card.emojiRef] || "emoji";
+                const cardLabel = `${colorObj.name} card with ${card.numberOfEmojis} ${card.emojiRef} ${emojiName}${card.numberOfEmojis > 1 ? "s" : ""}`;
+                const numberTextColor = blackTextColors.includes(colorObj.name) ? "#000" : "#fff";
                 return (
-                  <div
-                    key={globalIdx}
-                    className={`confirmation-card visual-selection-item${selected.includes(globalIdx) ? " selected" : ""}`}
-                    style={{
-                      backgroundColor: card.colorRef,
-                      position: "relative",
-                      cursor: "pointer"
-                    }}
-                    onClick={() => handleSelect(globalIdx)}
-                  >
-                    <span className="card-corner card-corner-top-left">{card.numberOfEmojis}</span>
-                    <span className="card-corner card-corner-bottom-right">{card.numberOfEmojis}</span>
-                    <div className="emoji-area">
-                      <div
-                        className="confirmation-emoji-grid"
-                        style={{
-                          gridTemplateColumns: `repeat(${card.config.columns}, 1fr)`,
-                          gridTemplateRows: `repeat(${card.config.rows}, 1fr)`
-                        }}
+                  <div className="visual-selection-card-container" key={globalIdx}>
+                    <div
+                      className={`confirmation-card visual-selection-item${selected.includes(globalIdx) ? " selected" : ""}`}
+                      style={{
+                        backgroundColor: card.colorRef,
+                        position: "relative",
+                        cursor: "pointer"
+                      }}
+                      onClick={() => handleSelect(globalIdx)}
+                    >
+                      <span
+                        className="card-corner card-corner-top-left"
+                        style={{ color: numberTextColor }}
                       >
-                        {card.config.positions.map(([x, y], i) => {
-                          let fontSize;
-                          switch (card.numberOfEmojis) {
-                            case 1: fontSize = "80px"; break;
-                            case 2:
-                            case 3:
-                            case 4:
-                            case 5:
-                            case 6:
-                            case 7:
-                            case 8:
-                            case 9: fontSize = "45px"; break;
-                            case 10: fontSize = "32px"; break;
-                            default: fontSize = "36px";
-                          }
-                          return (
-                            <span
-                              key={i}
-                              className="confirmation-emoji"
-                              style={{
-                                fontSize,
-                                gridColumn: x % 1 === 0 ? x + 1 : "1 / span 2",
-                                gridRow: y + 1,
-                                justifySelf: "center"
-                              }}
-                            >
-                              {card.emojiRef}
-                            </span>
-                          );
-                        })}
+                        {card.numberOfEmojis}
+                      </span>
+                      <span
+                        className="card-corner card-corner-bottom-right"
+                        style={{ color: numberTextColor }}
+                      >
+                        {card.numberOfEmojis}
+                      </span>
+                      <div className="emoji-area">
+                        <div
+                          className="confirmation-emoji-grid"
+                          style={{
+                            gridTemplateColumns: `repeat(${card.config.columns}, 1fr)`,
+                            gridTemplateRows: `repeat(${card.config.rows}, 1fr)`
+                          }}
+                        >
+                          {card.config.positions.map(([x, y], i) => {
+                            let fontSize;
+                            switch (card.numberOfEmojis) {
+                              case 1: fontSize = "80px"; break;
+                              case 2:
+                              case 3:
+                              case 4:
+                              case 5:
+                              case 6:
+                              case 7:
+                              case 8:
+                              case 9: fontSize = "45px"; break;
+                              case 10: fontSize = "32px"; break;
+                              default: fontSize = "36px";
+                            }
+                            return (
+                              <span
+                                key={i}
+                                className="confirmation-emoji"
+                                style={{
+                                  fontSize,
+                                  gridColumn: x % 1 === 0 ? x + 1 : "1 / span 2",
+                                  gridRow: y + 1,
+                                  justifySelf: "center"
+                                }}
+                              >
+                                {card.emojiRef}
+                              </span>
+                            );
+                          })}
+                        </div>
                       </div>
+                    </div>
+                    <div className="card-label">
+                      {cardLabel}
                     </div>
                   </div>
                 );

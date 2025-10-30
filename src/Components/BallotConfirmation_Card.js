@@ -10,7 +10,7 @@ import VoteContext from "../Contexts/VoteContext";
 const staticCard = {
   numberOfEmojis: 6,
   emojiRef: "😊",
-  colorRef: "#3887e7", // blue background
+  colorRef: "#0000ff", // blue background
   config: {
     columns: 2,
     rows: 3,
@@ -176,6 +176,8 @@ const BallotConfirmation = ({ type = "card", ballotNumber = 12345, isLoggedIn, s
     navigate("/welcome"); // Navigate to welcome page on logout
   };
 
+  const cardLabel = `${staticCard.colorRef === "#0000ff" ? "Blue" : ""} card with ${staticCard.numberOfEmojis} ${staticCard.emojiRef} emoji${staticCard.numberOfEmojis > 1 ? "s" : ""}`;
+
   return (
     <div className="page-wrapper">
       <main className="welcome-main">
@@ -251,6 +253,9 @@ const BallotConfirmation = ({ type = "card", ballotNumber = 12345, isLoggedIn, s
               </div>
             )}
             <div className="confirmation-info">
+              <div style={{ textAlign: "center", fontWeight: "bold", marginTop: "10px", fontSize: "1.5rem" }}>
+              {cardLabel}
+            </div>
               <div className="confirmation-datetime">{dateTime}</div>
               <div className="confirmation-candidate"> {votedCandidate}</div>
             </div>
