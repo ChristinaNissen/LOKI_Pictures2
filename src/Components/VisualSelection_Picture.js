@@ -148,7 +148,11 @@ const VisualSelectionPicture = () => {
   const [showConfirm, setShowConfirm] = useState(false); // modal state
   const [visualRepresentation, setVisualRepresentation] = useState(null);
   const [isCorrectSelection, setIsCorrectSelection] = useState(null);
+
+  // Add these states at the top of your component
+  const [search, setSearch] = useState("");
   const [letterFilter, setLetterFilter] = useState("");
+  
 
   const stepsNo = ["Voted Before", "Voting", "Confirmation"];
   const stepsYes = [
@@ -285,7 +289,7 @@ const VisualSelectionPicture = () => {
           <h1 style={{ width: "100%", textAlign: "left", margin: "0 0 10px 55px" }}>
             Select your pictures
           </h1>
-          <div className="instruction-list" style={{ maxWidth: "800px", margin: "0 auto 20px auto", textAlign:"left" }}>
+          <div className="instruction-list" style={{ maxWidth: "800px", margin: "0 auto 0px auto", textAlign:"left" }}>
             <ul>
               <li>You need to select all the pictures below that you have seen when casting your previous ballots.</li>
               <li>The system will not reveal if your selection is correct for security reasons.</li>
@@ -293,31 +297,63 @@ const VisualSelectionPicture = () => {
               <li>If you are unsure or cannot remember your pictures, please contact election officials at your polling station.</li>
             </ul>
           </div>
-          <div className="filter-controls">
-            <div className="search-wrapper">
-              <span className="search-icon">🔍</span>
-              <input
-                type="text"
-                placeholder="Search by picture name..."
-                value={letterFilter}
-                onChange={(e) => setLetterFilter(e.target.value)}
-                className="search-input"
-              />
-              {letterFilter && (
-                <button className="clear-btn" onClick={() => setLetterFilter("")}>
-                  Clear
-                </button>
-              )}
-            </div>
-            <div className="letter-buttons">
-              {/* Add letter buttons A-Z here if needed */}
-            </div>
-          </div>
+          <div className="filter-card">
+  <div className="filter-headline">Find your pictures</div>
+  <div className="filter-instructions">
+    Use the search box or click a letter to filter the list below to find your pictures.
+  </div>
+  <div className="filter-controls">
+    <div className="search-wrapper">
+      <span className="search-icon">🔍</span>
+      <input
+        id="word-search"
+        type="text"
+        className="word-filter-input"
+        placeholder="Search for your word..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        aria-label="Search for your word"
+      />
+    </div>
+    <div className="letter-buttons">
+      {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(letter => (
+        <button
+          key={letter}
+          className={
+            "word-filter-letter" +
+            (letterFilter === letter.toLowerCase() ? " active" : "")
+          }
+          aria-pressed={letterFilter === letter.toLowerCase()}
+          onClick={e => {
+            if (letterFilter === letter.toLowerCase()) {
+              setLetterFilter("");
+              e.currentTarget.blur(); // Remove focus so yellow style disappears
+            } else {
+              setLetterFilter(letter.toLowerCase());
+            }
+          }}
+          type="button"
+        >
+          {letter}
+        </button>
+      ))}
+      {letterFilter && (
+        <button
+          className="clear-btn"
+          onClick={() => setLetterFilter("")}
+          type="button"
+        >
+          Clear
+        </button>
+      )}
+    </div>
+  </div>
+</div>
+<hr className="filter-divider-visual" style={{ width: "95%" }} />
+          
           <div className="visual-select-grid-pictures">
             {filteredItems.length === 0 ? (
-              <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "20px" }}>
-                No pictures found. Try adjusting your search.
-              </div>
+              <p className="no-pictures-message">No pictures found. Try adjusting your search.</p>
             ) : (
               pagedItems.map((imgSrc, idx) => {
                 const globalIdx = page * PAGE_SIZE + idx;

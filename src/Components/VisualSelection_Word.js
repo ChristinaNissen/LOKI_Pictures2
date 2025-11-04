@@ -304,9 +304,9 @@ const VisualSelectionWord = () => {
             </ul>
           </div>
           <div className="filter-card">
-  <div className="filter-headline">Find your word</div>
+  <div className="filter-headline">Find your words</div>
   <div className="filter-instructions">
-    Use the search box or click a letter to filter the list below.
+    Use the search box or click a letter to filter the list below to find your words.
   </div>
   <div className="filter-controls">
     <div className="search-wrapper">
