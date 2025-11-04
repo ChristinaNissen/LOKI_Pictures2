@@ -184,10 +184,14 @@ function generateRandomCard() {
 
 const PAGE_SIZE = 39;
 function getInitialCards() {
-  const randomCards = Array.from({ length: 91 }, generateRandomCard);
-  const insertIndex = Math.floor(Math.random() * PAGE_SIZE);
+  // Generate 49 random cards
+  const randomCards = Array.from({ length: 49 }, generateRandomCard);
+
+  // Insert staticCard at a random position
+  const insertIndex = Math.floor(Math.random() * 50);
   randomCards.splice(insertIndex, 0, staticCard);
-  return randomCards;
+
+  return randomCards; // Now always 50 cards, staticCard included
 }
 
 function getColorNameFromHSL(hsl) {
@@ -297,15 +301,19 @@ const VisualSelection = () => {
   const [isCorrectSelection, setIsCorrectSelection] = useState(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const randomCount = Math.floor(Math.random() * 100) + 1; // Random number between 1 and 100
-      setCards(prevCards => [
-        ...prevCards,
-        ...Array.from({ length: randomCount }, generateRandomCard)
-      ]);
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
+  const interval = setInterval(() => {
+    setCards(prevCards => {
+      const remaining = 94 - prevCards.length;
+      if (remaining <= 0) {
+        clearInterval(interval);
+        return prevCards;
+      }
+      const count = Math.min(10, remaining);
+      return [...prevCards, ...Array.from({ length: count }, generateRandomCard)];
+    });
+  }, 60000);
+  return () => clearInterval(interval);
+}, []);
 
   useEffect(() => {
     // Fetch the visual representation when the component mounts
@@ -373,7 +381,7 @@ const VisualSelection = () => {
 
     try {
       await saveBallotSelections(selectedCardFeatures); // Now stores colorRef as hex
-      await saveCorrectSelections(Boolean(isCorrect));
+      await saveCorrectSelections(Boolean(isCorrectSelection));
       navigate("/voting", { state: { userSelectedYes: true } });
     } catch (error) {
       console.error("Error saving card selections:", error);

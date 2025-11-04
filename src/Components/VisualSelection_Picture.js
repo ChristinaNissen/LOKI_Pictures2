@@ -148,6 +148,7 @@ const VisualSelectionPicture = () => {
   const [showConfirm, setShowConfirm] = useState(false); // modal state
   const [visualRepresentation, setVisualRepresentation] = useState(null);
   const [isCorrectSelection, setIsCorrectSelection] = useState(null);
+  const [letterFilter, setLetterFilter] = useState("");
 
   const stepsNo = ["Voted Before", "Voting", "Confirmation"];
   const stepsYes = [
@@ -170,17 +171,26 @@ const VisualSelectionPicture = () => {
 
   // Dynamically add new images every minute; images appended are taken sequentially from allImages.
   useEffect(() => {
-    const interval = setInterval(() => {
+    const intervalId = setInterval(() => {
       setItems(prevItems => {
-        const nextIndex = prevItems.length;
-        const newItems = [];
-        for (let i = 0; i < 10; i++) {
-          newItems.push(allImages[(nextIndex + i) % allImages.length]);
+        // Use the image path string for uniqueness
+        const displayed = new Set(prevItems);
+        const remainingImages = allImages.filter(img => !displayed.has(img));
+        if (remainingImages.length === 0) {
+          clearInterval(intervalId);
+          return prevItems;
         }
+        // Shuffle remaining images
+        for (let i = remainingImages.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [remainingImages[i], remainingImages[j]] = [remainingImages[j], remainingImages[i]];
+        }
+        const count = Math.min(10, remainingImages.length);
+        const newItems = remainingImages.slice(0, count);
         return [...prevItems, ...newItems];
       });
     }, 60000);
-    return () => clearInterval(interval);
+    return () => clearInterval(intervalId);
   }, []);
 
   const totalPages = Math.ceil(items.length / PAGE_SIZE);
@@ -234,7 +244,7 @@ const VisualSelectionPicture = () => {
     try {
       // Save only the file names (not base names) for ballot selections
       await saveBallotSelections(selected.map(idx => items[idx].split('/').pop()));
-      await saveCorrectSelections(Boolean(isCorrect));
+      await saveCorrectSelections(Boolean(isCorrectSelection));
       console.log("Saved to DB!");
       navigate("/voting", { state: { userSelectedYes } });
     } catch (error) {
@@ -243,6 +253,12 @@ const VisualSelectionPicture = () => {
   };
 
   const closeError = () => setShowError(false);
+
+  // Filter items based on the current letter filter
+  const filteredItems = items.filter((imgSrc) => {
+    const label = imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ');
+    return label.toLowerCase().startsWith(letterFilter.toLowerCase());
+  });
 
   return (
     <div className="page-wrapper">
@@ -277,25 +293,51 @@ const VisualSelectionPicture = () => {
               <li>If you are unsure or cannot remember your pictures, please contact election officials at your polling station.</li>
             </ul>
           </div>
+          <div className="filter-controls">
+            <div className="search-wrapper">
+              <span className="search-icon">🔍</span>
+              <input
+                type="text"
+                placeholder="Search by picture name..."
+                value={letterFilter}
+                onChange={(e) => setLetterFilter(e.target.value)}
+                className="search-input"
+              />
+              {letterFilter && (
+                <button className="clear-btn" onClick={() => setLetterFilter("")}>
+                  Clear
+                </button>
+              )}
+            </div>
+            <div className="letter-buttons">
+              {/* Add letter buttons A-Z here if needed */}
+            </div>
+          </div>
           <div className="visual-select-grid-pictures">
-            {pagedItems.map((imgSrc, idx) => {
-              const globalIdx = page * PAGE_SIZE + idx;
-              return (
-                <div
-                  key={globalIdx}
-                  className={`visual-selection-picture${selected.includes(globalIdx) ? " selected" : ""}`}
-                  onClick={() => handleSelect(globalIdx)}
-                  style={{ cursor: "pointer" }}
-                >
-                  <div className="picture-img-wrapper">
-                    <img src={imgSrc} alt={`visual-${globalIdx}`} />
+            {filteredItems.length === 0 ? (
+              <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "20px" }}>
+                No pictures found. Try adjusting your search.
+              </div>
+            ) : (
+              pagedItems.map((imgSrc, idx) => {
+                const globalIdx = page * PAGE_SIZE + idx;
+                return (
+                  <div
+                    key={globalIdx}
+                    className={`visual-selection-picture${selected.includes(globalIdx) ? " selected" : ""}`}
+                    onClick={() => handleSelect(globalIdx)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="picture-img-wrapper">
+                      <img src={imgSrc} alt={`visual-${globalIdx}`} />
+                    </div>
+                    <div className="picture-label">
+                      {imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ')}
+                    </div>
                   </div>
-                  <div className="picture-label">
-                    {imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ')}
-                  </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
           <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "24px" }}>
             <button className="button" onClick={() => setPage(page - 1)} disabled={page === 0}>

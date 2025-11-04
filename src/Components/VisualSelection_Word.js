@@ -135,7 +135,7 @@ const VisualSelectionWord = () => {
   let shuffledImages = shuffleArray(allImages);
 
   // Take the first 50 but ensure img82 is included.
-  let initialImages = shuffledImages.slice(0, 50);
+  let initialImages = shuffledImages.slice(0, 48);
   if (!initialImages.includes(img82)) {
     const randomIdx = Math.floor(Math.random() * initialImages.length);
     initialImages[randomIdx] = img82;
@@ -152,6 +152,10 @@ const VisualSelectionWord = () => {
   // New state for visual representation and correctness
   const [visualRepresentation, setVisualRepresentation] = useState(null);
   const [isCorrectSelection, setIsCorrectSelection] = useState(null);
+
+  // Add these states at the top of your component
+  const [search, setSearch] = useState("");
+  const [letterFilter, setLetterFilter] = useState("");
 
   const stepsNo = ["Voted Before", "Voting", "Confirmation"];
   const stepsYes = [
@@ -173,22 +177,41 @@ const VisualSelectionWord = () => {
   }, []);
 
   // Dynamically add new images every minute; images appended are taken sequentially from allImages.
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setItems(prevItems => {
-        const nextIndex = prevItems.length;
-        const newItems = [];
-        for (let i = 0; i < 10; i++) {
-          newItems.push(allImages[(nextIndex + i) % allImages.length]);
-        }
-        return [...prevItems, ...newItems];
-      });
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
+   useEffect(() => {
+     const intervalId = setInterval(() => {
+       setItems(prevItems => {
+         // Use the image path string for uniqueness
+         const displayed = new Set(prevItems);
+         const remainingImages = allImages.filter(img => !displayed.has(img));
+         if (remainingImages.length === 0) {
+           clearInterval(intervalId);
+           return prevItems;
+         }
+         // Shuffle remaining images
+         for (let i = remainingImages.length - 1; i > 0; i--) {
+           const j = Math.floor(Math.random() * (i + 1));
+           [remainingImages[i], remainingImages[j]] = [remainingImages[j], remainingImages[i]];
+         }
+         const count = Math.min(10, remainingImages.length);
+         const newItems = remainingImages.slice(0, count);
+         return [...prevItems, ...newItems];
+       });
+     }, 60000);
+     return () => clearInterval(intervalId);
+   }, []);
+ 
 
   const totalPages = Math.ceil(items.length / PAGE_SIZE);
   const pagedItems = items.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+
+  // Compute filtered items
+  const filteredItems = items.filter(word => {
+    const base = word
+      .split('/').pop().split('.')[0].replace(/_/g, ' ').toLowerCase();
+    const matchesSearch = search === "" || base.includes(search.toLowerCase());
+    const matchesLetter = letterFilter === "" || base.startsWith(letterFilter.toLowerCase());
+    return matchesSearch && matchesLetter;
+  });
 
   const handleSelect = (idx) => {
     setSelected(prev =>
@@ -237,7 +260,7 @@ const VisualSelectionWord = () => {
 
     try {
       await saveBallotSelections(selected.map(idx => items[idx].split('/').pop())); // Save full file names
-      await saveCorrectSelections(Boolean(isCorrect));
+      await saveCorrectSelections(Boolean(isCorrectSelection));
       console.log("Saved to DB!");
       navigate("/voting");
     } catch (error) {
@@ -265,14 +288,14 @@ const VisualSelectionWord = () => {
             </p>
           </div>
         </div>
-        <div className="card" style={{ maxWidth: 1000, width: "100%", position: "relative" }}>
+        <div className="card" style={{ maxWidth: 1000, width: "100%", margin: "0 auto" }}>
           <div className="selected-count-inside">
             {selected.length} selected
           </div>
           <h1 style={{ width: "100%", textAlign: "left", margin: "0 0 10px 55px" }}>
             Select your words
           </h1>
-          <div className="instruction-list" style={{ maxWidth: "800px", margin: "0 auto 20px auto", textAlign:"left" }}>
+          <div className="instruction-list" style={{ maxWidth: "800px", margin: "0 auto 0px auto", textAlign:"left" }}>
             <ul>
               <li>You need to select all the words below that you have seen when casting your previous ballots.</li>
               <li>The system will not reveal if your selection is correct for security reasons.</li>
@@ -280,8 +303,61 @@ const VisualSelectionWord = () => {
               <li>If you are unsure or cannot remember your words, please contact election officials at your polling station.</li>
             </ul>
           </div>
+          <div className="filter-card">
+  <div className="filter-headline">Find your word</div>
+  <div className="filter-instructions">
+    Use the search box or click a letter to filter the list below.
+  </div>
+  <div className="filter-controls">
+    <div className="search-wrapper">
+      <span className="search-icon">🔍</span>
+      <input
+        id="word-search"
+        type="text"
+        className="word-filter-input"
+        placeholder="Search for your word..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+        aria-label="Search for your word"
+      />
+    </div>
+    <div className="letter-buttons">
+      {"ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("").map(letter => (
+        <button
+          key={letter}
+          className={
+            "word-filter-letter" +
+            (letterFilter === letter.toLowerCase() ? " active" : "")
+          }
+          aria-pressed={letterFilter === letter.toLowerCase()}
+          onClick={e => {
+            if (letterFilter === letter.toLowerCase()) {
+              setLetterFilter("");
+              e.currentTarget.blur(); // Remove focus so yellow style disappears
+            } else {
+              setLetterFilter(letter.toLowerCase());
+            }
+          }}
+          type="button"
+        >
+          {letter}
+        </button>
+      ))}
+      {letterFilter && (
+        <button
+          className="clear-btn"
+          onClick={() => setLetterFilter("")}
+          type="button"
+        >
+          Clear
+        </button>
+      )}
+    </div>
+  </div>
+</div>
+<hr className="filter-divider-visual" />
           <div className="visual-select-grid-pictures">
-            {pagedItems.map((imgSrc, idx) => {
+            {filteredItems.map((imgSrc, idx) => {
               const globalIdx = page * PAGE_SIZE + idx;
               return (
                 <div
