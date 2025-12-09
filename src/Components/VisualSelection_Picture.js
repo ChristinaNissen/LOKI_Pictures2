@@ -288,9 +288,6 @@ const VisualSelectionPicture = () => {
           </div>
         </div>
         <div className="card" style={{ maxWidth: 1000, width: "100%", position: "relative" }}>
-          <div className="selected-count-inside">
-            {selected.length} selected
-          </div>
           <h1 style={{ width: "100%", textAlign: "left", margin: "0 0 10px 55px" }}>
             Select your pictures
           </h1>
@@ -356,41 +353,50 @@ const VisualSelectionPicture = () => {
 </div>
 <hr className="filter-divider-visual" style={{ width: "95%" }} />
           
-          <div className="visual-select-grid-pictures">
-            {filteredItems.length === 0 ? (
-              <p className="no-pictures-message">No pictures found. Try adjusting your search.</p>
-            ) : (
-              pagedItems.map((imgSrc, idx) => {
-                const globalIdx = page * PAGE_SIZE + idx;
-                return (
-                  <div
-                    key={globalIdx}
-                    className={`visual-selection-picture${selected.includes(globalIdx) ? " selected" : ""}`}
-                    onClick={() => handleSelect(globalIdx)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <div className="picture-img-wrapper">
-                      <img src={imgSrc} alt={`visual-${globalIdx}`} />
-                    </div>
-                    <div className="picture-label">
-                      {imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ')}
-                    </div>
-                  </div>
-                );
-              })
-            )}
+          <div className="selected-count-inside">
+            {selected.length} selected
           </div>
-          <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "24px" }}>
+          <p className="scroll-instruction">
+            Scroll through the pictures and use the "Next page" button to see more.
+          </p>
+          
+          <div className="pictures-scroll-container">
+            <div className="visual-select-grid-pictures">
+              {filteredItems.length === 0 ? (
+                <p className="no-pictures-message">No pictures found. Try adjusting your search.</p>
+              ) : (
+                pagedItems.map((imgSrc, idx) => {
+                  const globalIdx = page * PAGE_SIZE + idx;
+                  return (
+                    <div
+                      key={globalIdx}
+                      className={`visual-selection-picture${selected.includes(globalIdx) ? " selected" : ""}`}
+                      onClick={() => handleSelect(globalIdx)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <div className="picture-img-wrapper">
+                        <img src={imgSrc} alt={`visual-${globalIdx}`} />
+                      </div>
+                      <div className="picture-label">
+                        {imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ')}
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+          </div>
+          <div style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "30px" }}>
             <button className="button" onClick={() => setPage(page - 1)} disabled={page === 0}>
-              Previous
+              ← Previous page
             </button>
             <button className="button" onClick={() => setPage(page + 1)} disabled={page >= totalPages - 1}>
-              Next
+              Next page →
             </button>
           </div>
         </div>
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "32px" }}>
-          <button onClick={handleNext} className="button">
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "20px" }}>
+          <button onClick={handleNext} className="button confirm-selection-button">
             Confirm selection
           </button>
         </div>
