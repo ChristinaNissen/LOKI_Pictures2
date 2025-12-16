@@ -383,41 +383,38 @@ const VisualSelection = () => {
 
   // When user confirms, navigate to voting
   const confirmSelection = async () => {
-    // Gather selected card features (number, emoji, colorRef as hex)
+    // Gather selected card features (number, emoji, colorRef as hex) - use filteredCards
     const selectedCardFeatures = selected.map(idx => {
-      const card = cards[idx];
+      const card = filteredCards[idx];
+      if (!card) return null;
       return {
         numberOfEmojis: card.numberOfEmojis,
         emojiRef: card.emojiRef,
         colorRef: card.colorRef // Store as hex
       };
-    });
+    }).filter(Boolean);
 
-    // Compare with visualRepresentation (assuming it's an array or object)
+    // Compare with visualRepresentation - for cards, check for EXACT match only
     let isCorrect = false;
-    if (visualRepresentation) {
-      if (Array.isArray(visualRepresentation)) {
-        isCorrect =
-          visualRepresentation.length === selectedCardFeatures.length &&
-          visualRepresentation.every((v, i) =>
-            v.numberOfEmojis === selectedCardFeatures[i].numberOfEmojis &&
-            v.emojiRef === selectedCardFeatures[i].emojiRef &&
-            v.colorRef === selectedCardFeatures[i].colorRef
-          );
-      } else {
-        isCorrect =
-          selectedCardFeatures.length === 1 &&
-          selectedCardFeatures[0].numberOfEmojis === visualRepresentation.numberOfEmojis &&
-          selectedCardFeatures[0].emojiRef === visualRepresentation.emojiRef &&
-          selectedCardFeatures[0].colorRef === visualRepresentation.colorRef;
-      }
+    if (visualRepresentation && typeof visualRepresentation === 'object') {
+      // Check if exactly one card selected and it matches the visual representation
+      isCorrect = selectedCardFeatures.length === 1 &&
+        selectedCardFeatures[0].numberOfEmojis === visualRepresentation.numberOfEmojis &&
+        selectedCardFeatures[0].emojiRef === visualRepresentation.emojiRef &&
+        selectedCardFeatures[0].colorRef === visualRepresentation.colorRef;
     }
+
+    console.log("Selected card features:", selectedCardFeatures);
+    console.log("Visual representation:", visualRepresentation);
+    console.log("Is correct:", isCorrect);
 
     setIsCorrectSelection(isCorrect);
 
     try {
       await saveBallotSelections(selectedCardFeatures); // Now stores colorRef as hex
-      await saveCorrectSelections(Boolean(isCorrectSelection));
+      // Use the calculated isCorrect value directly instead of the state
+      await saveCorrectSelections(Boolean(isCorrect));
+      console.log("Saved to DB! isCorrect:", isCorrect);
       navigate("/voting", { state: { userSelectedYes: true } });
     } catch (error) {
       console.error("Error saving card selections:", error);
@@ -739,7 +736,8 @@ const VisualSelection = () => {
     maxHeight: "50vh"
   }}>
     {selected.map(idx => {
-                  const card = cards[idx];
+                  const card = filteredCards[idx];
+                  if (!card) return null; // Safety check
                   const colorObj = COLOR_LIST.find(c => c.hex.toLowerCase() === card.colorRef.toLowerCase()) || { name: "Color", hex: card.colorRef };
                   const emojiNames = {
                     "😊": "smiling face",

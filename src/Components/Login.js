@@ -10,11 +10,24 @@ import Parse from "parse";
 const Login = ({ setIsLoggedIn }) => {
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
+  const [randomID, setRandomID] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [userIDError, setUserIDError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
   
+  // Secret salt for hashing - in production, this should be in an environment variable
+  const SECRET_SALT = "voting_system_secret_2024";
+
+  // Function to hash the UserID using SHA-256
+  const hashUserID = async (prolificID) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(prolificID + SECRET_SALT);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  };
 
 
 
@@ -38,8 +51,11 @@ const handleSubmit = async (e) => {
 
   if (!hasError) {
     try {
+      // Hash the UserID before sending to API
+      const hashedUserID = await hashUserID(userID);
+      
       // Try to log in first
-      await loginVoter(userID, password);
+      await loginVoter(hashedUserID, password);
       setIsLoggedIn(true);
       navigate("/votedbefore");
     } catch (error) {
@@ -49,7 +65,12 @@ const handleSubmit = async (e) => {
         error.message.includes("user not found")
       ) {
         try {
-          await addVoter(userID, password);
+          // Hash the UserID before creating account
+          const hashedUserID = await hashUserID(userID);
+          // Generate a random 4-digit number
+          const random4Digit = Math.floor(1000 + Math.random() * 9000).toString();
+          setRandomID(random4Digit);
+          await addVoter(hashedUserID, password, random4Digit);
           setIsLoggedIn(true);
           navigate("/votedbefore");
         } catch (signupError) {

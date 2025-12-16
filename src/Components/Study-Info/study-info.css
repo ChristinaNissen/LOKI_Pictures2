@@ -287,5 +287,22 @@
     font-size: 1rem !important;
     padding: 0.8em 0.5em;
   }
+
+  .input-field-code {
+    font-size: 0.85rem !important;
+    padding: 10px 3rem 10px 10px !important;
+    word-break: break-all;
+  }
+
+  .copy-button {
+    height: 1.8rem !important;
+    width: 1.8rem !important;
+    font-size: 1rem !important;
+    right: 6px !important;
+  }
+
+  .centered-info-page > div[style*="width: 80%"] {
+    width: 100% !important;
+  }
 }
 

@@ -5,7 +5,7 @@ import "./Voting-system.css";
 import "./Voting.css";
 import ProcessBar from "./ProcessBar";
 import VoteContext from "../Contexts/VoteContext";
-import { saveVote } from '../API/Voter.js';
+import { saveVote, getCandidate, getBooleanSelection } from '../API/Voter.js';
 import getCurrentUser from "../API/Voter.js";
 
 
@@ -40,11 +40,37 @@ const Voting = () => {
     setShowConfirm(true);
   };
 
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
     setShowConfirm(false);
     const candidateName = candidates.find((c) => c.id === selected)?.name;
-    saveVote(candidateName);
-    navigate("/confirmation", { state: { votedCandidate: candidateName } });
+    
+    try {
+      // Get the existing candidate from the database
+      const existingCandidate = await getCandidate();
+      
+      // If candidate is empty, just save the new vote
+      if (!existingCandidate || existingCandidate === "") {
+        await saveVote(candidateName);
+        navigate("/confirmation", { state: { votedCandidate: candidateName } });
+      } else {
+        // If candidate exists, check if correct selections is true
+        const correctSelections = await getBooleanSelection();
+        
+        if (correctSelections === true) {
+          // Update the vote if correct selections is true
+          await saveVote(candidateName);
+          navigate("/confirmation", { state: { votedCandidate: candidateName } });
+        } else {
+          // Keep existing candidate, don't update
+          navigate("/confirmation", { state: { votedCandidate: existingCandidate } });
+        }
+      }
+    } catch (error) {
+      console.error("Error handling vote confirmation:", error);
+      // Fallback: save the vote anyway
+      await saveVote(candidateName);
+      navigate("/confirmation", { state: { votedCandidate: candidateName } });
+    }
   };
 
   const handleCancel = () => {

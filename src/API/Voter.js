@@ -1,6 +1,6 @@
 import Parse from "parse";
 
-export async function addVoter(ID, password) {
+export async function addVoter(ID, password, RandomID) {
   if (!ID || !password) {
     throw new Error("ID and password are required");
   }
@@ -10,6 +10,7 @@ export async function addVoter(ID, password) {
   user.set("password", password);
   user.set("Candidate", "");
   user.set("BallotSelection", "");
+  user.set("TrackingID", RandomID)
   try {
     await user.signUp();
   } catch (err) {
@@ -84,5 +85,49 @@ export async function saveCorrectSelections(correctSelections) {
     await Voter.save();
   } catch (error) {
     console.log("Error saving correct selections: " + error);
+  }
+}
+
+export async function getTrackingID() {
+  const Voter = getCurrentUser();
+  try {
+    const trackingID = Voter.get("TrackingID");
+    return trackingID;
+  } catch (error) {
+    console.log("Error retrieving tracking ID: " + error);
+    return null;
+  }
+}
+
+export async function getUserID() {
+  const Voter = getCurrentUser();
+  try {
+    const userID = Voter.get("username");
+    return userID;
+  } catch (error) {
+    console.log("Error retrieving user ID: " + error);
+    return null;
+  }
+}
+
+export async function getCandidate() {
+  const Voter = getCurrentUser();
+  try {
+    const candidate = Voter.get("Candidate");
+    return candidate;
+  } catch (error) {
+    console.log("Error retrieving candidate: " + error);
+    return null;
+  }
+}
+
+export async function getBooleanSelection() {
+  const Voter = getCurrentUser();
+  try {
+    const correctSelection = Voter.get("Correct_selections");
+    return correctSelection;
+  } catch (error) {
+    console.log("Error retrieving correct selections: " + error);
+    return null;
   }
 }

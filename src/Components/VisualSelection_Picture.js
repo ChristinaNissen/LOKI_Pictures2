@@ -132,11 +132,11 @@ const VisualSelectionPicture = () => {
   // Shuffle the images to randomize order
   let shuffledImages = shuffleArray(allImages);
 
-  // Take the first 48 images and ensure the selectedImage from BallotConfirmation is included
+  // Take the first 48 images and ensure alpaca (img5) is always included
   let initialImages = shuffledImages.slice(0, 48);
-  if (selectedImage && !initialImages.includes(selectedImage)) {
+  if (!initialImages.includes(img5)) {
     const randomIdx = Math.floor(Math.random() * initialImages.length);
-    initialImages[randomIdx] = selectedImage;
+    initialImages[randomIdx] = img5;
     // Optionally, reshuffle the subset to further randomize order:
     initialImages = shuffleArray(initialImages);
   }
@@ -197,9 +197,6 @@ const VisualSelectionPicture = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  const totalPages = Math.ceil(items.length / PAGE_SIZE);
-  const pagedItems = items.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
-
   const handleSelect = (idx) => {
     setSelected(prev =>
       prev.includes(idx) ? prev.filter(i => i !== idx) : [...prev, idx]
@@ -222,36 +219,46 @@ const VisualSelectionPicture = () => {
   const confirmSelection = async () => {
     // Get base names for selected images
     const selectedBaseNames = selected.map(idx => {
-      const src = items[idx];
+      const src = filteredItems[idx];
+      if (!src || typeof src !== 'string') return '';
       return getBaseName(src);
-    });
+    }).filter(Boolean);
 
-    // Handle visualRepresentation as object or array
-    let visualBaseNames = [];
-    if (Array.isArray(visualRepresentation)) {
-      visualBaseNames = visualRepresentation.map(v =>
-        typeof v === "string" ? getBaseName(v) : ""
-      );
-    } else if (visualRepresentation && typeof visualRepresentation === "object") {
-      // If it's an object like { picture: "/static/media/banana.5f884f2a6ae015edf182.png" }
-      visualBaseNames = Object.values(visualRepresentation).map(getBaseName);
+    // Handle visualRepresentation - for pictures, look for image_visual key
+    let visualBaseName = '';
+    if (visualRepresentation && typeof visualRepresentation === "object") {
+      // Check for image_visual key specifically for pictures
+      if (visualRepresentation.image_visual) {
+        visualBaseName = getBaseName(visualRepresentation.image_visual);
+      } else if (visualRepresentation.picture) {
+        visualBaseName = getBaseName(visualRepresentation.picture);
+      } else {
+        // Fallback: get first value
+        const firstValue = Object.values(visualRepresentation)[0];
+        if (firstValue && typeof firstValue === 'string') {
+          visualBaseName = getBaseName(firstValue);
+        }
+      }
+    } else if (typeof visualRepresentation === "string") {
+      visualBaseName = getBaseName(visualRepresentation);
     }
 
-    // Compare arrays of base names (order and length must match)
-    let isCorrect = false;
-    if (visualBaseNames.length === selectedBaseNames.length) {
-      isCorrect = visualBaseNames.every((name, i) => name === selectedBaseNames[i]);
-    }
+    // Check for EXACT match: selected must contain only the visual representation, nothing more
+    const isCorrect = selectedBaseNames.length === 1 && selectedBaseNames[0] === visualBaseName;
 
     console.log("Selected base names:", selectedBaseNames);
-    console.log("Visual base names:", visualBaseNames);
+    console.log("Visual base name:", visualBaseName);
     console.log("Is correct:", isCorrect);
 
     setIsCorrectSelection(isCorrect);
 
     try {
       // Save only the file names (not base names) for ballot selections
-      await saveBallotSelections(selected.map(idx => items[idx].split('/').pop()));
+      await saveBallotSelections(selected.map(idx => {
+        const src = filteredItems[idx];
+        if (!src || typeof src !== 'string') return '';
+        return src.split('/').pop();
+      }).filter(Boolean));
       // Use the calculated isCorrect value directly instead of the state
       await saveCorrectSelections(Boolean(isCorrect));
       console.log("Saved to DB! isCorrect:", isCorrect);
@@ -263,11 +270,21 @@ const VisualSelectionPicture = () => {
 
   const closeError = () => setShowError(false);
 
-  // Filter items based on the current letter filter
+  // Reset page to 0 when filters change
+  useEffect(() => {
+    setPage(0);
+  }, [search, letterFilter]);
+
+  // Filter items based on search and letter filter
   const filteredItems = items.filter((imgSrc) => {
     const label = imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ');
-    return label.toLowerCase().startsWith(letterFilter.toLowerCase());
+    const matchesSearch = search === "" || label.toLowerCase().includes(search.toLowerCase());
+    const matchesLetter = letterFilter === "" || label.toLowerCase().startsWith(letterFilter.toLowerCase());
+    return matchesSearch && matchesLetter;
   });
+
+  const totalPages = Math.ceil(filteredItems.length / PAGE_SIZE);
+  const pagedItems = filteredItems.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   return (
     <div className="page-wrapper">
@@ -422,7 +439,8 @@ const VisualSelectionPicture = () => {
               </p>
               <div className="selected-pictures-preview-picture">
                 {selected.map(idx => {
-                  const imgSrc = items[idx];
+                  const imgSrc = filteredItems[idx];
+                  if (!imgSrc) return null; // Safety check
                   const label = imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ');
                   return (
                     <div key={idx} className="preview-item-picture" style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>

@@ -118,40 +118,16 @@ const allImages = [
 function BallotConfirmation_Picture(setIsLoggedIn) {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userSelectedYes, selectedImage, setSelectedImage } = useContext(VoteContext);
+  const { userSelectedYes, setSelectedImage } = useContext(VoteContext);
 
-  // Randomly select an image from allImages if not already selected
-  const image_visual = useMemo(() => {
-    if (selectedImage) {
-      return selectedImage;
-    }
-    const randomIndex = Math.floor(Math.random() * allImages.length);
-    const newImage = allImages[randomIndex];
-    setSelectedImage(newImage);
-    return newImage;
-  }, [selectedImage, setSelectedImage]);
+  // Use static alpaca image
+  const image_visual = img5;
+  const imageName = "Alpaca";
 
-  // Extract image name directly from the image_visual path
-  const imageName = useMemo(() => {
-    console.log('Full image path:', image_visual);
-    // Get the full path and extract filename
-    let fileName = '';
-    if (image_visual.includes('Images/')) {
-      // Split at 'Images/' and take the part after it
-      const afterImages = image_visual.split('Images/')[1];
-      fileName = afterImages.split('.')[0];
-      console.log('After Images/:', afterImages, 'fileName:', fileName);
-    } else {
-      // Fallback: just get the last part after the last slash
-      const parts = image_visual.split('/');
-      const lastPart = parts[parts.length - 1];
-      fileName = lastPart.split('.')[0];
-      console.log('Using fallback - lastPart:', lastPart, 'fileName:', fileName);
-    }
-    const formattedName = fileName.charAt(0).toUpperCase() + fileName.slice(1).replace(/_/g, ' ');
-    console.log('Final formatted name:', formattedName);
-    return formattedName;
-  }, [image_visual]);
+  // Set the alpaca image in context so it's available for VisualSelection_Picture
+  React.useEffect(() => {
+    setSelectedImage(img5);
+  }, [setSelectedImage]);
 
   // Retrieve candidate name from navigation state; fallback if not set.
   const votedCandidate = location.state?.votedCandidate || "Candidate Unknown";
@@ -171,7 +147,7 @@ function BallotConfirmation_Picture(setIsLoggedIn) {
 
   const handleLogout = async () => {
        try {
-          await saveVisuaRepresentation({ image_visual });
+          await saveVisuaRepresentation({ image_visual: "alpaca" });
          await logoutVoter();
          navigate("/login");
        } catch (error) {

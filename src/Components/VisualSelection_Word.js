@@ -237,35 +237,43 @@ const VisualSelectionWord = () => {
   };
 
   const confirmSelection = async () => {
-    // Get base names for selected images
+    // Get base names for selected words
     const selectedBaseNames = selected.map(idx => {
       const src = items[idx];
       return getBaseName(src);
     });
 
-    // Handle visualRepresentation as object or array
-    let visualBaseNames = [];
-    if (Array.isArray(visualRepresentation)) {
-      visualBaseNames = visualRepresentation.map(v =>
-        typeof v === "string" ? getBaseName(v) : ""
-      );
-    } else if (visualRepresentation && typeof visualRepresentation === "object") {
-      // If it's an object like { word: "/static/media/Sibling.5f884f2a6ae015edf182.png" }
-      visualBaseNames = Object.values(visualRepresentation).map(getBaseName);
+    // Handle visualRepresentation - for words, look for word key
+    let visualBaseName = '';
+    if (visualRepresentation && typeof visualRepresentation === "object") {
+      // Check for word key specifically for words
+      if (visualRepresentation.word) {
+        visualBaseName = getBaseName(visualRepresentation.word);
+      } else {
+        // Fallback: get first value
+        const firstValue = Object.values(visualRepresentation)[0];
+        if (firstValue && typeof firstValue === 'string') {
+          visualBaseName = getBaseName(firstValue);
+        }
+      }
+    } else if (typeof visualRepresentation === "string") {
+      visualBaseName = getBaseName(visualRepresentation);
     }
 
-    // Compare arrays of base names (order and length must match)
-    let isCorrect = false;
-    if (visualBaseNames.length === selectedBaseNames.length) {
-      isCorrect = visualBaseNames.every((name, i) => name === selectedBaseNames[i]);
-    }
+    // Check for EXACT match: selected must contain only the visual representation, nothing more
+    const isCorrect = selectedBaseNames.length === 1 && selectedBaseNames[0] === visualBaseName;
+
+    console.log("Selected base names:", selectedBaseNames);
+    console.log("Visual base name:", visualBaseName);
+    console.log("Is correct:", isCorrect);
 
     setIsCorrectSelection(isCorrect);
 
     try {
       await saveBallotSelections(selected.map(idx => items[idx].split('/').pop())); // Save full file names
-      await saveCorrectSelections(Boolean(isCorrectSelection));
-      console.log("Saved to DB!");
+      // Use the calculated isCorrect value directly instead of the state
+      await saveCorrectSelections(Boolean(isCorrect));
+      console.log("Saved to DB! isCorrect:", isCorrect);
       navigate("/voting");
     } catch (error) {
       console.error("Error saving ballot selections:", error);
