@@ -14,6 +14,8 @@ const Login = ({ setIsLoggedIn }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [userIDError, setUserIDError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [showStudyModal, setShowStudyModal] = useState(false);
+  const [hasShownModal, setHasShownModal] = useState(false);
   const navigate = useNavigate();
   
   // Secret salt for hashing - in production, this should be in an environment variable
@@ -23,6 +25,16 @@ const Login = ({ setIsLoggedIn }) => {
   const hashUserID = async (prolificID) => {
     const encoder = new TextEncoder();
     const data = encoder.encode(prolificID + SECRET_SALT);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  };
+
+  // Function to hash the Password using SHA-256
+  const hashPassword = async (password) => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password + SECRET_SALT);
     const hashBuffer = await crypto.subtle.digest('SHA-256', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
@@ -51,11 +63,12 @@ const handleSubmit = async (e) => {
 
   if (!hasError) {
     try {
-      // Hash the UserID before sending to API
+      // Hash the UserID and Password before sending to API
       const hashedUserID = await hashUserID(userID);
+      const hashedPassword = await hashPassword(password);
       
       // Try to log in first
-      await loginVoter(hashedUserID, password);
+      await loginVoter(hashedUserID, hashedPassword);
       setIsLoggedIn(true);
       navigate("/votedbefore");
     } catch (error) {
@@ -65,12 +78,13 @@ const handleSubmit = async (e) => {
         error.message.includes("user not found")
       ) {
         try {
-          // Hash the UserID before creating account
+          // Hash the UserID and Password before creating account
           const hashedUserID = await hashUserID(userID);
+          const hashedPassword = await hashPassword(password);
           // Generate a random 4-digit number
           const random4Digit = Math.floor(1000 + Math.random() * 9000).toString();
           setRandomID(random4Digit);
-          await addVoter(hashedUserID, password, random4Digit);
+          await addVoter(hashedUserID, hashedPassword, random4Digit);
           setIsLoggedIn(true);
           navigate("/votedbefore");
         } catch (signupError) {
@@ -96,13 +110,19 @@ const handleSubmit = async (e) => {
         </div>
         <div className="login-card">
           <form onSubmit={handleSubmit} className="login-form">
-            <label htmlFor="userID">User ID</label>
+            <label htmlFor="userID">ProlificID</label>
             <input
               id="userID"
               type="text"
-              placeholder ="Enter user ID"
+              placeholder ="Enter Prolific ID"
               value={userID}
               onChange={(e) => setUserID(e.target.value)}
+              onFocus={() => {
+                if (!hasShownModal) {
+                  setShowStudyModal(true);
+                  setHasShownModal(true);
+                }
+              }}
               className="login-input"
               autoComplete="username"
             />
@@ -136,6 +156,23 @@ const handleSubmit = async (e) => {
             </button>
           </form>
         </div>
+
+        {showStudyModal && (
+          <div className="study-modal-backdrop" onClick={() => setShowStudyModal(false)}>
+            <div className="study-modal" onClick={(e) => e.stopPropagation()}>
+              <h2>Study Information</h2>
+              <p>
+                Since this is a research study, please use your <strong>Prolific ID</strong> for both the ID and Password fields.<br /><br />
+                In a real election, this login would require actual credentials for security purposes.
+              </p>
+              <div className="study-modal-actions">
+                <button className="study-button" onClick={() => setShowStudyModal(false)}>
+                  Got it
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
       <Footer />
     </div>
