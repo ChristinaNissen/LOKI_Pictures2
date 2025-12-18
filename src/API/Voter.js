@@ -21,9 +21,9 @@ export async function addVoter(ID, password, RandomID) {
   }
 }
 
-export async function loginVoter(ID, password, randomID) {
+export async function loginVoter(ID, password) {
   await Parse.User.logOut();
-  await Parse.User.logIn(ID, password, randomID);
+  await Parse.User.logIn(ID, password);
 }
 
 export async function logoutVoter(){
