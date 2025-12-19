@@ -230,7 +230,7 @@ function BallotConfirmationPicture(setIsLoggedIn) {
       <p style={{ fontSize: "18px", fontWeight: "bold" }}>Are you sure you want to log out?</p>
       <p>
         When you log out, you will not be able to view your picture again.<br />
-        Make sure you have memorized your card details before proceeding.
+        Make sure you have memorised your picture before proceeding.
       </p>
       <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "16px" }}>
         <button className="button" onClick={handleLogout}>Yes</button>
