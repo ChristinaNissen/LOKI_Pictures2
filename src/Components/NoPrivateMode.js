@@ -25,7 +25,7 @@ const NoPrivateMode = () => {
           </p>
         </div>
 
-        <div className="study-modal" style={{ marginTop: "2rem", position: "static", transform: "none", maxWidth: "600px", margin: "2rem auto" }}>
+        <div className="study-modal study-modal-static">
           <p>
             For the purposes of this study, please do not use private browsing or open the login in a new window or tab.<br /><br />
             To ensure your interaction is properly registered, simply click the login button below to proceed.

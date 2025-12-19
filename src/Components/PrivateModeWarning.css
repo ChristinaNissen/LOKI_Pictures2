@@ -57,6 +57,14 @@
   font-size: 1.18rem;
 }
 
+.study-modal-static {
+  position: static;
+  transform: none;
+  margin: 2rem auto;
+  max-width: 600px;
+  width: 90%;
+}
+
 .study-modal h2 {
   color: #1976d2;
   font-size: 2.1rem;
@@ -174,10 +182,10 @@ border: 1.5px solid #ccc;
     top: 0; left: 0; right: 0; bottom: 0;
     background: rgba(0,0,0,0.25);
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: center;
     z-index: 2000;
-    padding-top: 10vw;
+    padding: 20px;
     box-sizing: border-box;
   }
 
@@ -193,6 +201,14 @@ border: 1.5px solid #ccc;
     color: #222;
     font-size: 1rem;
     box-sizing: border-box;
+  }
+
+  .study-modal-static {
+    width: 85% !important;
+    max-width: 85% !important;
+    padding: 18px 12px !important;
+    margin: 20px auto !important;
+    box-sizing: border-box !important;
   }
 
   .study-modal h2 {
