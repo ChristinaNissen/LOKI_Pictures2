@@ -75,10 +75,16 @@ const handleSubmit = async (e) => {
       setIsLoggedIn(true);
       navigate("/votedbefore");
     } catch (error) {
+      console.log("Login error code:", error.code, "message:", error.message);
       // If login fails, try to sign up
+      // Parse error code 101 = Invalid username/password
+      // Parse error code 404 or message includes "not found" = endpoint or user not found
       if (
+        error.code === 101 ||
+        error.code === 404 ||
         error.message.includes("Invalid username/password") ||
-        error.message.includes("user not found")
+        error.message.includes("user not found") ||
+        error.message.includes("Not Found")
       ) {
         try {
           // Hash the UserID and Password before creating account
@@ -87,10 +93,12 @@ const handleSubmit = async (e) => {
           // Generate a random 4-digit number
           const random4Digit = Math.floor(1000 + Math.random() * 9000).toString();
           await addVoter(hashedUserID, hashedPassword, random4Digit);
+          // User is automatically logged in after successful signup
           setIsLoggedIn(true);
           navigate("/votedbefore");
         } catch (signupError) {
-          if (signupError.message.includes("Account already exists")) {
+          console.log("Signup error:", signupError);
+          if (signupError.message.includes("Account already exists") || signupError.code === 202) {
             setUserIDError("This user ID is already taken. Please choose another.");
           } else {
             setPasswordError("Login failed. Please try again.");
