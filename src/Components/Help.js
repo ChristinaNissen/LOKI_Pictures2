@@ -1,566 +1,309 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Help.css";
 import "./Voting-system.css";
 import "./Welcome.css"; // Assuming Welcome.css defines the chevron icons
 import Footer from "./Footer";
 
 const helpSections = [
-	{
-		title: "General Information",
-		items: [
-			{
-				id: "general",
-				title: "How do I vote online?",
-				content: (
-					<div>
-						<p >
-							As a Danish citizen above the age 18, you are automatically
-							eligible to vote in local and national elections.
-							You do not need to register anywhere.
-						</p>
-						<p>
-							You have the option to either vote in person at your local
-							polling station or digitally via this portal.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "difference",
-				title: "What are the differences between voting online or in person?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							The choice to vote in person or digitally is entirely up to you.
-							It is however important to remember some differences:
-						</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								Online voting allows you to change your vote, physical voting
-								does not.
-							</li>
-							<li>
-								Physical votes are final. If you vote both online and physically,
-								only your physical vote will count.
-							</li>
-							<li>
-								Online voting cannot guarantee your privacy from people around
-								you. Physical voting is fully private.
-							</li>
-						</ul>
-						<p>
-							The online voting portal has numerous safety measures to protect
-							you from coercion. For further information, read the
-							Anti-Coercion Measures section below.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "vote-multiple-times",
-				title: "Can I vote multiple times?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							<strong>Every citizen only has one vote.</strong>
-						</p>
-						<p>
-							The digital voting system allows you to vote multiple times to
-							change your vote. Only your last vote counts.
-							Casting multiple ballots does not result in multiple votes given
-							to your selected party/candidate or to your selected position on
-							an issue.
-						</p>
-						<p>
-							Casting a ballot both digitally and in person does not result in
-							multiple votes given. Only your physical ballot will count in this
-							scenario.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "privacy",
-				title: "Are my votes private?",
-				content: (
-					<div className="space-y-2">
-						<p>Your voting privacy is protected through several measures:</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								Your ballots are encrypted before they are sent over the network.
-								This prevents hackers from seeing your choices even if they have
-								access to your network activity.
-							</li>
-							<li>
-								The system hides your ballot in the database by creating other fake
-								ballots. This means that even in the event of a database breach,
-								your vote can never be traced back to you.
-							</li>
-						</ul>
-						<p>It is however not possible to guarantee your privacy in some cases:</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>There is somebody looking at your screen while you vote.</li>
-							<li>
-								Your computer has a virus which allows hackers to see your screen
-								or computer activity.
-							</li>
-						</ul>
-						<p>
-							When voting, always make sure you are alone and have the most
-							up-to-date version of your operating system and any security
-							software you use.
-							If you are in doubt, you can vote in person at your local polling
-							station instead.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "authentication",
-				title: "What do I need to vote online?",
-				content: (
-					<div className="space-y-2">
-						<p>To vote online, you need:</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>A smartphone with MyID app installed</li>
-							<li>Biometric authentication enabled on your device</li>
-							<li>An up-to-date version of MyID</li>
-						</ul>
-					</div>
-				),
-			},
-		],
-	},
-	{
-		title: "Anti-Coercion Measures",
-		items: [
-			{
-				id: "what-is-coercion",
-				title: "What is voter coercion?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							Voter coercion occurs when someone forces or pressures you to vote
-							in a particular way against your will.
-							This can happen through:
-						</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								<strong>Direct threats:</strong> Someone threatening harm if you
-								don't vote as they demand
-							</li>
-							<li>
-								<strong>Intimidation:</strong> Creating fear or discomfort to
-								influence your vote
-							</li>
-							<li>
-								<strong>Monitoring:</strong> Someone watching over your shoulder as
-								you vote to ensure you vote their way
-							</li>
-							<li>
-								<strong>Family pressure:</strong> Relatives insisting you vote
-								according to family preferences
-							</li>
-							<li>
-								<strong>Financial leverage:</strong> Promising rewards or
-								threatening financial consequences based on how you vote
-							</li>
-						</ul>
-						<p className="mt-2">
-							Online voting systems are particularly vulnerable to coercion
-							because voting can happen outside the privacy of an official voting
-							booth.
-							The anti-coercion measures in this system are designed to give you
-							ways to protect your true voting intentions even under pressure.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "coercion-risk",
-				title: "What if I'm being coerced to vote?",
-				content: (
-					<div className="space-y-2">
-						<p>If someone is forcing you to vote in a certain way, you have several options:</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								<strong>Intentional misidentification:</strong> If you're being
-								watched while voting, you can intentionally misidentify your
-								previous ballot.
-								This will make your new vote invalid without the coercer knowing.
-							</li>
-							<li>
-								<strong>Vote again later:</strong> You can comply with the coercer,
-								then vote again later in private. Only your last valid vote counts.
-							</li>
-							<li>
-								<strong>Vote in person:</strong> You can always choose to vote at a
-								physical polling station where privacy is guaranteed.
-								Physical votes are final and cannot be recast.
-							</li>
-						</ul>
-						<p className="mt-2 text-red-600 font-medium">
-							If you're in immediate danger, please contact the authorities at the
-							emergency number 112.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "plausible-deniability",
-				title: "How does plausible deniability work?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							The system is designed so that if you're forced to vote under
-							supervision, you can make your vote invalid in ways that aren't
-							obvious to an observer:
-						</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								If you've voted before, you can claim you haven't (or select the
-								wrong previous ballot). This invalidates your new vote.
-							</li>
-							<li>
-								If you haven't voted before, you can claim you have. This will lead
-								to a verification step that will fail, invalidating your vote.
-							</li>
-							<li>These actions appear normal to an observer but result in an invalid vote.</li>
-							<li>
-								If you voted in person, your vote cannot be changed. However, these
-								features still remain available to you for your protection.
-							</li>
-						</ul>
-						<p>
-							No matter if you've voted before, voted in person, or haven't voted
-							at all,{" "}
-							<strong>
-								the system will never disclose any information about your past
-								actions — it will always appear as if you have not voted before.
-							</strong>{" "}
-							This allows you to plausibly claim or deny any past action you might
-							have taken.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "incognito-mode",
-				title: "Why do I need to use Incognito Mode?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							Incognito Mode does not keep your browsing history or save any
-							cookies. This helps to protect you from coercion by ensuring that no
-							one can tell whether you've already voted.
-							It is an important step to maintain your plausible deniability from
-							a potential coercer.
-						</p>
-					</div>
-				),
-			},
-		],
-	},
-	{
-		title: "Revoting",
-		items: [
-			{
-				id: "revoting",
-				title: "How does revoting work?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							The online voting portal allows you to recast your vote an unlimited
-							number of times until the election closes.
-						</p>
-						<p>
-							To be able to cast a new ballot, you must be able to recall all your
-							previous valid ballots by their date and time cast.
-							The system will provide you with visual and lexical memory aids to
-							help you remember your previous ballots.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "revote-physical",
-				title: "Can I revote if I voted in person?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							No. Physical votes are final and cannot be changed. If you vote both
-							digitally and physically,
-							only your physical vote will count.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "memory-aids",
-				title: "What are the memory aids?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							Your ballot has two memory aids to help you identify it later if you
-							need to revote:
-						</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								<strong>Word phrase:</strong> A unique two-word combination (e.g.,
-								"grit orient") that's generated from your ballot's information.
-								This phrase is easier to remember than numbers or codes.
-							</li>
-							<li>
-								<strong>Visual pattern (identicon):</strong> The colored square
-								pattern is a visual identifier unique to your ballot.
-								It helps you recognize your ballot at a glance when you need to
-								verify it later.
-							</li>
-						</ul>
-						<p className="mt-2">
-							Both memory aids are generated based on your ballot's timestamp and
-							ID, creating unique identifiers that are consistent
-							for your specific ballot. They help you find your ballot among many
-							others if you need to revote.
-						</p>
-						<p className="mt-2">
-							While these aids make identification easier, remembering the date
-							and time of your vote is still the most reliable way to identify your
-							ballot.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "ballot-verification-security",
-				title: "Why do I need to verify my voting history?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							The voting history verification step serves two critical security
-							purposes:
-						</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								<strong>Identity verification:</strong> It ensures that only you can
-								cast or change your vote by requiring knowledge that only you
-								should have.
-							</li>
-							<li>
-								<strong>Anti-coercion protection:</strong> It gives you a way to
-								invalidate coerced votes without the coercer knowing.
-							</li>
-						</ul>
-						<p className="mt-2">
-							When you want to revote, you'll be shown a list of ballots that
-							includes your previously cast ballots mixed with many others.
-							You need to select all of your previous valid ballots to verify your
-							identity.
-						</p>
-						<p className="mt-2 text-red-600 font-medium">
-							Important: If you provide incorrect information about having
-							previously voted or fail to identify all your previous valid ballots,
-							your new ballot will not be valid.
-						</p>
-						<p>
-							If you are being coerced, you can use this feature to intentionally
-							invalidate the coerced ballot by selecting the wrong ballots or
-							claiming you haven't voted when you have (or vice versa).
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "previous-ballots",
-				title: "How do I identify my previous ballots?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							To protect your voting privacy, the system doesn't explicitly tell
-							you which ballots are yours or which ones are valid.
-							Instead, you need to recognize your own ballots using:
-						</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>The date and time when you cast your vote</li>
-							<li>The unique visual pattern (identicon) associated with your ballot</li>
-							<li>The word phrase generated for your ballot</li>
-						</ul>
-						<p className="mt-2">
-							When you cast a ballot, you'll see a receipt with this information.
-							It's important to remember or note these details if you plan to revote
-							later.
-						</p>
-						<p className="mt-2">If you're having trouble identifying your previous ballots, you can:</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>Use the date and time filters to narrow down the list</li>
-							<li>Look for the unique visual pattern and word phrase that match your ballot</li>
-						</ul>
-						<p className="mt-2">
-							If you're still unsure, you can vote in person at your local polling
-							station. Physical votes are final and cannot be changed.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "valid-ballot",
-				title: "What are valid and invalid ballots?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							A valid ballot is cast when you provide accurate information about
-							your voting history for the given election.
-							Conversely, an invalid ballot is cast when you, intentionally or not,
-							provide false information about your voting history.
-						</p>
-						<p className="mt-2 text-red-600 font-medium">
-							It is important that, when revoting, you only identify your previous
-							valid ballots.
-						</p>
-						<p>Examples:</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>
-								If, for this election, this is your first time voting and you
-								select you have not voted before, your first cast ballot will
-								always be valid.
-							</li>
-							<li>
-								If you vote again later, select that you have voted before in this
-								election, and correctly identify your previous ballot,
-								your new ballot will be valid. If you wish to vote again for the
-								third time later, you must correctly identify both previous
-								ballots.
-							</li>
-							<li>
-								If you have voted before in this election but select that this is
-								your first time voting, your ballot will be invalid.
-								Conversely, if you have not voted before in this election but
-								select that you have and select any of the presented ballots,
-								your ballot will be invalid.
-							</li>
-						</ul>
-					</div>
-				),
-			},
-			{
-				id: "see-valid-ballot",
-				title: "Can I see if my ballot was valid or not?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							The system protects you against potential coercion by maintaining
-							your plausible deniability at all points.
-							This unfortunately means that there is no way for you to see if any
-							of your ballots were valid or not.
-						</p>
-						<p>
-							<strong>Your first ballot will always be valid</strong>, provided you
-							selected that you had not voted before when casting it.
-						</p>
-						<p>
-							If you are unsure about your previous votes in this election but wish
-							to revote, you can still vote physically at your local polling
-							station.
-							Physical votes always take priority over digital ones.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "many-ballots",
-				title: "Why am I seeing so many ballots?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							For security and privacy reasons, your ballot is mixed with many other
-							decoy ballots.
-							This makes it difficult for anyone to identify which ballots are
-							yours, protecting you from potential coercion.
-							<br />
-							The decoy ballots are periodically created by the server for each user
-							and will not count in the final election tally.
-						</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>Use the date and time filters to narrow down the list</li>
-							<li>Look for the unique visual pattern and word phrase associated with your ballot</li>
-							<li>If you voted recently, your ballot is likely to be among the newer ones</li>
-						</ul>
-						<p className="mt-2">
-							If you're having trouble finding your ballot, you can always vote in
-							person at your local polling station.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "see-previous-votes",
-				title: "Can I see how I voted?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							The system protects you against potential coercion by maintaining
-							your plausible deniability at all points.
-							This unfortunately means that there is no way for you to see your
-							voting history.
-						</p>
-					</div>
-				),
-			},
-			{
-				id: "cant-remember",
-				title: "What if I can't remember my previous ballots?",
-				content: (
-					<div className="space-y-2">
-						<p>
-							In the event you wish to change your vote but cannot recall your
-							previous valid ballots, you can vote at your local
-							polling station in person. Physical votes are final and are always
-							counted, regardless of if you voted online first.
-						</p>
-					</div>
-				),
-			},
-		],
-	},
-	{
-		title: "Technical Support",
-		items: [
-			{
-				id: "technical",
-				title: "Technical Requirements",
-				content: (
-					<div className="space-y-2">
-						<p>For the best voting experience:</p>
-						<ul className="list-disc pl-6 space-y-1">
-							<li>Use a modern web browser (Chrome, Firefox, Safari)</li>
-							<li>Enable JavaScript</li>
-							<li>Ensure a stable internet connection</li>
-							<li>Use a private, secure device</li>
-						</ul>
-					</div>
-				),
-			},
-			{
-				id: "assistance",
-				title: "Need Additional Help?",
-				content: (
-					<div>
-						If you cannot use MyID or experience any issues, please visit your local
-						voting station where staff will assist you with the voting process.
-					</div>
-				),
-			},
-		],
-	},
+  {
+    title: "General Information",
+    items: [
+      {
+        id: "general",
+        title: "Who can vote online?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              You can vote online if you are eligible to vote in the election. Citizens aged 18 or older are automatically eligible to vote.
+            </p>
+            <p>
+              If you are eligible to vote, you are automatically registered and do not need to sign up in advance.
+            </p>
+            <p>
+              Eligible voters can access the online voting platform using the digital credentials already used for public services.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "authentication",
+        title: "What do I need to vote online?",
+        content: (
+          <div className="space-y-2">
+            <p>To vote online, you need the following:</p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>A device such as a computer, tablet, or smartphone</li>
+              <li>
+                A modern web browser (Chrome, Firefox, Safari, or Edge) in its
+                latest version
+              </li>
+              <li>A stable internet connection</li>
+            </ul>
+            <p>
+              Make sure your device is private and secure while voting, for example by voting alone and ensuring no one can see your screen.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "how-to-vote-online",
+        title: "How do I vote online?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              To vote online, log in to the voting platform and follow the on-screen instructions. The process consists of the following steps:
+            </p>
+            <ol className="list-decimal pl-6 space-y-1">
+              <li>Indicate whether you have voted before in this election.</li>
+              <li>
+                If you select <em>Yes</em>, identify your previous vote(s) by selecting the card(s) you saw when casting your previous vote(s). Each card has a background color, a number (1–10), and a combination of emoji to help you recognise it.
+              </li>
+              <li>
+                Cast your vote by choosing your candidate and submitting your ballot.
+              </li>
+              <li className="space-y-2">
+  <span>
+    After submitting your ballot, a confirmation screen will display a card linked to your submitted ballot. The card is shown only during this session and will not be shown again after you leave the voting system.
+  </span>
+  <p>
+    For security reasons, you should not save, photograph, or record your card. The system is designed so that no proof of your vote can be created.
+  </p>
+</li>
+
+
+            </ol>
+            <p>
+              You can change your online vote as many times as you wish until the election closes. Only your last submitted online vote will count, unless you also vote in person, in which case the in-person vote takes precedence.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "difference",
+        title: "What are the differences between voting online or in person?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              You are free to choose whether to vote online or at a polling station. However, there are important differences:
+            </p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>Online voting allows you to change your vote until the election closes.</li>
+              <li>In-person (physical) voting is final and cannot be changed.</li>
+              <li>If you vote both online and in person, only your physical vote will count.</li>
+              <li>
+                Online voting cannot guarantee privacy from people physically near you, such as family members or others in the same room.
+              </li>
+              <li>
+                In-person voting takes place in a private voting booth and guarantees physical privacy.
+              </li>
+            </ul>
+          </div>
+        ),
+      },
+    ],
+  },
+  {
+    title: "Revoting",
+    items: [
+      {
+        id: "revoting",
+        title: "How does revoting work?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              The online voting system allows you to recast your vote as many times as you wish until the election closes.
+            </p>
+            <p>
+              Each time you revote, the system will ask you to identify your previous vote(s) using the card(s) you saw when voting earlier. This includes all previous voting attempts, even if a vote was later replaced.
+            </p>
+            <p>
+              Only your last valid online vote will count. If you also vote in person, your in-person vote takes precedence.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "previous-ballots",
+        title: "How do I identify my previous vote(s)?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              To identify your previously cast vote(s), you need to select the card(s) shown to you immediately after submitting your vote(s).
+            </p>
+            <p>
+              <strong>Important:</strong> You must select <em>all</em> cards you have seen before, including cards from any previous attempts, even if a vote was later replaced.
+            </p>
+            <p>
+              The system will not provide feedback on whether your selection is correct.
+            </p>
+            <p>
+              If you do not select the correct card(s), your vote will not be updated. Your submission will be considered invalid.
+            </p>
+            <p>
+              If you cannot remember or find your card(s), you can always vote in person at your local polling station.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "ballot-verification-security",
+        title: "Why do I need to identify my previous vote(s) to revote?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              You need to identify your previous vote(s) to ensure the security and integrity of the revoting process. This helps the system both confirm your identity and protect your vote from potential coercion:
+            </p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>
+                <strong>Identity verification:</strong> Only you can update your vote by recognising the cards that you saw during your previous vote(s). This confirms that you were the person who cast them.
+              </li>
+              <li>
+                <strong>Anti-coercion protection:</strong> This allows you to invalidate a coerced vote without others knowing, either by intentionally selecting the wrong cards when identifying previous votes or by answering the question about whether you have voted before in a way that does not reveal your true voting history.
+              </li>
+            </ul>
+          </div>
+        ),
+      },
+      {
+        id: "revote-physical",
+        title: "Can I change my vote if I already voted in person?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              No. Physical votes are final and cannot be changed. If you vote both digitally and physically, only your in-person vote will be counted.
+            </p>
+          </div>
+        ),
+      },
+    ],
+  },
+  {
+    title: "Anti-Coercion Measures",
+    items: [
+      {
+        id: "what-is-coercion",
+        title: "What is voter coercion?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              Voter coercion happens when someone pressures or forces you to vote in a particular way against your will. This can take several forms:
+            </p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li><strong>Direct threats:</strong> Someone threatens harm if you do not vote as they demand.</li>
+              <li><strong>Intimidation:</strong> Creating fear or discomfort to influence your vote.</li>
+              <li><strong>Monitoring:</strong> Someone watching over your shoulder while you vote.</li>
+              <li><strong>Family pressure:</strong> Relatives insisting that you vote according to family preferences.</li>
+              <li><strong>Financial leverage:</strong> Promises of rewards or threats of financial consequences based on how you vote.</li>
+            </ul>
+            <p>
+              Online voting is particularly vulnerable to coercion because it occurs outside the privacy of an official voting booth. The anti-coercion measures in this system are designed to help you protect your true voting intentions, even under pressure.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "coercion-risk",
+        title: "What can I do if I am being coerced?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              If someone is pressuring or forcing you to vote in a certain way, you can protect your vote using the system’s anti-coercion features:
+            </p>
+            <ul className="list-disc pl-6 space-y-1">
+              <li>
+                <strong>Answer or select incorrectly:</strong> You can protect yourself by intentionally answering the question about whether you have voted before incorrectly, or by selecting the wrong card(s) when asked to identify previous votes. This will cause the coerced vote to be invalid.
+              </li>
+              <li>
+                <strong>Vote again later:</strong> You may comply under pressure and cast a vote as instructed, then vote again later in private. If you correctly identify your previous votes when revoting, your new vote will be valid and replace the coerced one.
+              </li>
+              <li>
+                <strong>Vote in person:</strong> You can choose to vote at a physical polling station, where privacy is guaranteed. Physical votes are final and always take precedence over online votes.
+              </li>
+            </ul>
+            <p className="mt-2 font-medium">
+              If you are in immediate danger, contact the authorities at the emergency number 112.
+            </p>
+          </div>
+        ),
+      },
+      {
+        id: "incognito-mode",
+        title: "Why do I need a private browser to protect against coercion?",
+        content: (
+          <div className="space-y-2">
+            <p>
+              You need to use a private browser to prevent your device from leaving traces of your activity, such as browsing history or cookies.
+            </p>
+            <p>
+              The voting system itself never provides any information about what you voted for, whether you have voted before, or whether your selections are correct. However, traces left on your device could be used by someone nearby to see whether you have accessed the voting platform. Using a private browser helps prevent others from knowing whether or how you voted.
+            </p>
+          </div>
+        ),
+      },
+    ],
+  },
+  {
+  title: "Vote Privacy",
+  items: [
+    {
+      id: "privacy-protection",
+      title: "Protection of your voting privacy",
+      content: (
+        <div className="space-y-2">
+          <p>
+            Your voting privacy is protected through several system-level measures:
+          </p>
+          <ul className="list-disc pl-6 space-y-1">
+            <li>
+              Votes are encrypted before being sent over the network, preventing
+              anyone from seeing your selections.
+            </li>
+            <li>
+              Your ballot is mixed with decoy votes in the database. This ensures
+              that even in the event of a breach, your vote cannot be traced back to you.
+            </li>
+          </ul>
+          <p>
+            Keep in mind that privacy cannot be guaranteed if someone is physically
+            watching your screen or if your device is compromised by malware.
+          </p>
+          <p>
+            Always vote in a private, secure environment and ensure your device
+            has the latest security updates. If you are unsure, you can vote in person
+            at your local polling station.
+          </p>
+        </div>
+      ),
+    },
+    {
+      id: "see-how-i-voted",
+      title: "Can I see how I voted?",
+      content: (
+        <div className="space-y-2">
+          <p>
+            No. The system does not display your vote history to maintain your privacy
+            and to prevent coercion. This ensures that no one, including the system itself,
+            can verify how you voted, even if they observe your activity.
+          </p>
+        </div>
+      ),
+    },
+  ],
+}
 ];
+
 
 const Help = () => {
 	// Manage open/close state per FAQ item.
-	const [openItems, setOpenItems] = useState({});
-
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, []);
+	const [openItems, setOpenItems] = useState(() => {
+	const initial = {};
+	helpSections.forEach(section => {
+		if (section.title === "Support & Contact") {
+			section.items.forEach(item => { initial[item.id] = true; });
+		}
+	});
+	return initial;
+});
 
 	const toggleItem = (id) => {
 		setOpenItems((prev) => ({ ...prev, [id]: !prev[id] }));
@@ -571,8 +314,7 @@ const Help = () => {
 			<main className="welcome-main">
 				<h1>Help &amp; FAQ</h1>
 				<div className="text-main">
-					Below you find answers to frequently asked questions about the online voting system. <br/>
-					If you need further assistance, please visit your local voting station.
+					Below you find answers to frequently asked questions about the online voting system, including privacy protections, revoting, and safeguards against voter coercion. If you need help, please contact voter support or visit your local voting station.
 				</div>
 				<div className="card">
 					<div className="accordion">

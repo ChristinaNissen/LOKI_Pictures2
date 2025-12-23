@@ -1,57 +1,51 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Footer from "./Footer";
 import "./Welcome.css";
-import "./Voting-system.css";
 import votingIllustration from "../Assets/landingpage_banner.png";
+import overviewImg from "../Assets/Overview4.png";
 
-const accordionData = [
+const infoData = [
 	{
-		title: "Ensure You're in a Private Environment",
+		title: "Vote in a Private and Safe Setting",
 		content:
-			"Make sure you are alone and in a secure environment before starting the voting process.",
+			"Please ensure you are alone and cannot be observed or influenced while voting. A private environment helps protect the secrecy of your vote and freedom to vote according to your own choice.",
 	},
 	{
-		title: "Get to Know our Anti-Coercion Measures",
+		title: "Technical Requirements",
 		content:
-			"Our system includes measures to prevent coercion and ensure your vote is confidential.",
+			"For a secure and reliable voting experience, use a modern web browser (such as the latest version of Chrome, Firefox, Safari, or Edge) and a stable internet connection.",
 	},
 	{
-		title: "Authentication Requirements",
+		title: "Protection Against Coercion",
 		content:
-			"You will need your NemID/MitID or another approved authentication method to log in.",
+			"This voting system is designed to protect your vote from coercion or undue influence. Your selections remain confidential, and no one can verify how you voted in the election.",
 	},
 	{
-		title: "System Requirements",
-		content:
-			"Please use an updated browser and ensure your internet connection is stable.",
-	},
-	{
-		title: "Need Help?",
-		content: "Visit our Help section or contact support for assistance.",
+		title: "Need Assistance?",
+		content: (
+			<>
+				If you experience any issues while voting or have questions, please visit the <Link to="/help" style={{ textDecoration: "underline" }}>Help</Link> section or contact voter support for assistance.
+			</>
+		),
 	},
 ];
 
 const Welcome = () => {
-	const [openItems, setOpenItems] = useState({});
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		window.scrollTo(0, 0);
 	}, []);
 
-	const toggleAccordion = (idx) => {
-		setOpenItems((prev) => ({ ...prev, [idx]: !prev[idx] }));
-	};
-
 	return (
 		<div className="page-wrapper">
 			<main className="welcome-main">
-				<h1>Welcome to Denmark's Online Voting Portal</h1>
+				<h1>Welcome to The Online Voting System</h1>
 				<div className="text-main text-welcome-main">
 					Your secure platform for participating in democratic decision-making
 				</div>
-				
+				{/* Move the visual overview below the welcome illustration and before the info card, and match width to info card */}
 				<div className="welcome-illustration">
 					<img
 						src={votingIllustration}
@@ -59,28 +53,29 @@ const Welcome = () => {
 						style={{ width: "100%", borderRadius: "8px" }}
 					/>
 				</div>
-				<section className="card" style={{ width: "500px" }}>
-					<h2>Before You Vote:</h2>
-					<div className="accordion">
-						{accordionData.map((item, idx) => (
-							<div key={idx} className="accordion-item">
-								<button
-									className="accordion-title"
-									onClick={() => toggleAccordion(idx)}
-								aria-expanded={openItems[idx]}
-							>
-								{item.title}
-								<span className="accordion-arrow">
-									{openItems[idx] ? "▲" : "▼"}
-								</span>
-							</button>
-							<div className={`accordion-content ${!openItems[idx] ? 'collapsed' : ''}`}>
-								{item.content}
-							</div>
+				{/* Add a separate card for the steps above the info card */}
+					<section className="card" style={{ maxWidth: "800px", marginBottom: "36px" }}>
+					<div className="info-list">
+						<h2 className="before-vote-heading">How to vote online</h2>
+						<div className="info-item" style={{ padding: 0, border: 'none', textAlign: 'left' }}>
+							<img src={overviewImg} alt="Voting process overview" style={{ width: '100%', borderRadius: '10px', display: 'block', marginBottom: '10px' }} />
+						</div>
+					</div>
+				</section>
+
+
+				<section className="card" style={{ maxWidth: "800px" }}>
+					<div className="info-list">
+						<h2 className="before-vote-heading">Before You Vote</h2>
+						{infoData.map((item, idx) => (
+							<div key={idx} className="info-item">
+								<h3>{item.title}</h3>
+								<p>{item.content}</p>
 							</div>
 						))}
 					</div>
 				</section>
+			
 				<button
 				style={{ marginTop: "32px" }}
 					className="button"
