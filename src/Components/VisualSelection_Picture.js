@@ -227,6 +227,17 @@ const VisualSelectionPicture = () => {
     return filename.split('/').pop().split('.')[0];
   };
 
+  const getDisplayName = (filename) => {
+    // Extract base name and remove variant codes like _01b, _02s, _03s, _04s
+    const baseName = filename.split('/').pop().split('.')[0];
+    // Remove variant codes (underscore followed by digits and optionally a letter)
+    const displayName = baseName.replace(/_\d+[a-z]?$/i, '');
+    // Replace remaining underscores with spaces and capitalize first letter of each word
+    return displayName.replace(/_/g, ' ').split(' ').map(word => 
+      word.charAt(0).toUpperCase() + word.slice(1)
+    ).join(' ');
+  };
+
   const confirmSelection = async () => {
     // Get base names for selected images
     const selectedBaseNames = selected.map(idx => {
@@ -286,7 +297,7 @@ const VisualSelectionPicture = () => {
 
   // Filter items based on search and letter filter
   const filteredItems = items.filter((imgSrc) => {
-    const label = imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ');
+    const label = getDisplayName(imgSrc);
     const matchesSearch = search === "" || label.toLowerCase().includes(search.toLowerCase());
     const matchesLetter = letterFilter === "" || label.toLowerCase().startsWith(letterFilter.toLowerCase());
     return matchesSearch && matchesLetter;
@@ -304,12 +315,13 @@ const VisualSelectionPicture = () => {
           <div className="text-main text-main-confirmation">
             Please select all pictures below that you have seen when casting your previous ballots.
           </div>
-          <div className="security-box">
+           <div className="security-box">
             <p className="text-small">
-              <strong>Security Feature:</strong>
-              <br />
-              This part of the voting system makes sure you can vote freely without any outside pressure.
-              Only you can update your vote so that your privacy is protected.
+              <strong>Why is this step needed?</strong><br />
+              This feature verifies your identity, ensuring that only you can update your vote by recognising the cards shown to you after your previous voting session(s).<br /><br />
+              This feature also protects against coercion. If you are pressured to vote a certain way, you can intentionally select the wrong cards to prevent your vote from being updated, without revealing your true voting history.<br /><br />
+              If you cannot remember your card(s), you can always vote in person at your local polling station.<br /><br />
+              <a href="/help#ballot-verification-security" className="faq-link">Read more in the FAQ</a>
             </p>
           </div>
         </div>
@@ -407,7 +419,7 @@ const VisualSelectionPicture = () => {
                         <img src={imgSrc} alt={`visual-${globalIdx}`} />
                       </div>
                       <div className="picture-label">
-                        {imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ')}
+                        {getDisplayName(imgSrc)}
                       </div>
                     </div>
                   );
@@ -452,7 +464,7 @@ const VisualSelectionPicture = () => {
                 {selected.map(idx => {
                   const imgSrc = filteredItems[idx];
                   if (!imgSrc) return null; // Safety check
-                  const label = imgSrc.split('/').pop().split('.')[0].replace(/_/g, ' ');
+                  const label = getDisplayName(imgSrc);
                   return (
                     <div key={idx} className="preview-item-picture" style={{ display: "flex", flexDirection: "column", alignItems: "center", position: "relative" }}>
                       <button
