@@ -318,9 +318,9 @@ const VisualSelectionPicture = () => {
            <div className="security-box">
             <p className="text-small">
               <strong>Why is this step needed?</strong><br />
-              This feature verifies your identity, ensuring that only you can update your vote by recognising the cards shown to you after your previous voting session(s).<br /><br />
-              This feature also protects against coercion. If you are pressured to vote a certain way, you can intentionally select the wrong cards to prevent your vote from being updated, without revealing your true voting history.<br /><br />
-              If you cannot remember your card(s), you can always vote in person at your local polling station.<br /><br />
+              This feature verifies your identity, ensuring that only you can update your vote by recognising the pictures shown to you after your previous voting session(s).<br /><br />
+              This feature also protects against coercion. If you are pressured to vote a certain way, you can intentionally select the wrong pictures to prevent your vote from being updated, without revealing your true voting history.<br /><br />
+              If you cannot remember your picture(s), you can always vote in person at your local polling station.<br /><br />
               <a href="/help#ballot-verification-security" className="faq-link">Read more in the FAQ</a>
             </p>
           </div>
