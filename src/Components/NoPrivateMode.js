@@ -26,9 +26,9 @@ const NoPrivateMode = () => {
 Private (incognito) mode helps protect your voting privacy by ensuring your session and activity are not saved on your device. The voting system itself never reveals whether you have voted before or how you have voted. However, your browser may otherwise keep traces such as history, cookies, or cached data, which could show that you accessed the voting platform.
 <br></br>
 <br></br>
-Using private browsing helps prevent others from discovering whether you have participated in online voting, even if they have access to your device. This is especially important for protecting you against coercion or unwanted scrutiny, and helps ensure your vote remains confidential.
+Using private browsing helps prevent others from discovering whether you have participated in online voting, even if they have access to your device. This is especially important for protecting you against coercion or unwanted scrutiny, and helps ensure your vote remains confidential.<br /><br />
+            <a href="/help#incognito-mode" className="faq-link">Read more in the FAQ</a>
           </p>
-          <a href="/help#incognito-mode" className="faq-link">Read more in the FAQ</a>
         </div>
 
         <div className="study-modal study-modal-static">
