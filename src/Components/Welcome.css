@@ -18,7 +18,7 @@
   width: 100%;
   background: none;
   border: none;
-  text-align: left;
+  text-align: left!important;
   padding: 16px 0;
   font-size: 1.1rem;
   font-weight: bold;
@@ -56,11 +56,222 @@
   padding: 0;
 }
 
+.before-vote-heading {
+  margin-bottom: 8px;
+  padding-left: 0;
+  text-align: left !important;
+  font-size: 2rem;
+  font-weight: 700;
+  max-width: 370px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+section.card h2 {
+  text-align: left !important;
+}
+
+.info-list {
+  max-width: 370px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.info-list {
+  max-width: 98vw;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.info-item {
+  transition: background 0.2s;
+}
+
+.info-item:not(:last-child) {
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+}
+
+.info-item:first-child {
+  margin-top: 0;
+  padding-top: 4px;
+}
+
+.info-item:last-child {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.info-item:last-child p {
+  margin-bottom: 0;
+}
+
+.info-item h3 {
+  font-size: 1.08rem;
+  color: #000;
+  margin: 28px 0 6px 0;
+  letter-spacing: 0.01em;
+}
+
+.info-item:first-child h3 {
+  margin-top: 0;
+}
+
+.info-item p {
+  margin-top: 0;
+  margin-bottom: 0;
+  color: #000;
+  font-size: 17.6px;
+  line-height: 1.6;
+}
+
 .welcome-h2 {
   font-size: 2rem;
   font-weight: bold;
   margin: 24px 0 16px 0;
   text-align: center;
+}
+
+section.card {
+  max-width: 500px;
+  margin: 24px auto 0 auto;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #ececec;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.02);
+  padding: 28px 56px 40px 56px;
+}
+
+section.card:hover {
+  box-shadow: none !important;
+  cursor: default !important;
+}
+
+/* --- ProcessBar-style visual overview for Welcome page --- */
+.welcome-process-bar-container {
+  width: 90%;
+  max-width: 800px;
+  margin: 36px auto 0 auto;
+  box-sizing: border-box;
+}
+.welcome-process-bar-title {
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+.welcome-process-bar-row {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+  gap: 0;
+}
+.welcome-process-step {
+  position: relative;
+  flex-shrink: 0;
+  width: 180px;
+  min-width: 120px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.welcome-step-icon-container {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto;
+}
+.welcome-step-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #ffd600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+.welcome-step-icon.active {
+  background-color: #ffd600;
+}
+.welcome-step-label {
+  margin-top: 16px;
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: #111;
+  text-align: center;
+}
+.welcome-step-desc {
+  font-size: 1.01rem;
+  color: #666;
+  margin-top: 6px;
+  line-height: 1.4;
+  max-width: 170px;
+  min-width: 100px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  word-break: break-word;
+}
+.welcome-step-divider-container {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  min-width: 24px;
+  max-width: 200px;
+}
+.welcome-step-divider {
+  height: 2px;
+  background-color: #e0e0e0; /* Match ProcessBar.js default connector color */
+  width: 100%;
+  border-radius: 1px;
+  transition: background-color 0.3s;
+}
+@media (max-width: 900px) {
+  .welcome-process-step {
+    width: 120px;
+    min-width: 80px;
+  }
+  .welcome-step-desc {
+    max-width: 110px;
+    font-size: 0.92rem;
+  }
+}
+@media (max-width: 700px) {
+  .welcome-process-bar-container {
+    max-width: 99vw;
+  }
+  .welcome-step-icon-container {
+    width: 28px;
+    height: 28px;
+  }
+  .welcome-step-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .welcome-step-label {
+    font-size: 0.85rem;
+  }
+  .welcome-step-desc {
+    font-size: 0.8rem;
+  }
+  .welcome-step-divider {
+    height: 3px;
+  }
+  .welcome-process-step {
+    width: 36px;
+  }
 }
 
 @media (max-width: 600px) {
@@ -118,5 +329,82 @@
 
   .text-main.text-welcome-main{
     text-align:center !important;
+  }
+}
+
+section.card h2.before-vote-heading {
+  text-align: left !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  display: block;
+  width: 100%;
+}
+
+section.card h2.before-vote-heading, section.card h2.before-vote-heading * {
+  text-align: left !important;
+}
+
+.welcome-how-works-section {
+  max-width: 540px;
+  margin: 40px auto 0 auto;
+  padding: 0 12px;
+}
+.welcome-how-works-title {
+  text-align: left !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  margin: 0 0 18px 0 !important;
+  letter-spacing: 0 !important;
+  padding-left: 0 !important;
+}
+.welcome-how-works-card {
+  text-align: left !important;
+  max-width: 800px !important;
+  margin: 24px auto 0 auto !important;
+  background: #fff !important;
+  border-radius: 10px !important;
+  border: 1px solid #ececec !important;
+  box-shadow: 0 1px 4px 0 rgba(0,0,0,0.02) !important;
+  padding: 28px 56px 40px 56px !important;
+}
+.welcome-how-works-list {
+  list-style: decimal inside !important;
+  padding-left: 0 !important;
+  margin: 0 0 24px 0 !important;
+  text-align: left !important;
+}
+.welcome-how-works-list li {
+  margin-bottom: 16px !important;
+  font-size: 1.08rem !important;
+  line-height: 1.5 !important;
+  color: #222 !important;
+  text-align: left !important;
+}
+
+.info-list-steps {
+  list-style: decimal inside;
+  padding-left: 0;
+  margin: 0 0 0 0;
+  font-size: 17.6px;
+  color: #000;
+  line-height: 1.6;
+}
+.info-list-steps li {
+  margin-bottom: 10px;
+  font-size: inherit;
+  color: inherit;
+  font-weight: normal;
+}
+
+@media (max-width: 600px) {
+  .welcome-how-works-card {
+    max-width: 80%;
+    width: 100vw;
+    box-sizing: border-box;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    overflow-x: hidden;
   }
 }
