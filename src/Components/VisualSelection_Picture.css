@@ -1,3 +1,15 @@
+.faq-link {
+  color: #bfa700;
+  font-weight: 500;
+  font-size: 1em;
+  text-decoration: none;
+  border-bottom: 1.5px solid #ffd600;
+  padding: 0 1px 1px 1px;
+  border-radius: 2px;
+  background: transparent;
+  transition: background 0.2s, color 0.2s, border-bottom-color 0.2s;
+  display: inline;
+}
 .button:disabled {
   background: #eee;
   color: #aaa;
