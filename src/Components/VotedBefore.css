@@ -1,3 +1,25 @@
+.security-box-voted-before {
+  max-width: 700px;
+  width: 100%;
+  margin: 20px auto;
+  background-color: rgba(255, 255, 204, 0.8); /* Light yellow */
+  border: 2px solid #ffe066;
+  padding: 18px 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  text-align: left;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.card-wide.voted-before {
+  max-width: 700px;
+  margin: 0 auto 24px auto;
+  margin-top: 25px;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
 .faq-link {
   color: #bfa700;
   font-weight: 500;
