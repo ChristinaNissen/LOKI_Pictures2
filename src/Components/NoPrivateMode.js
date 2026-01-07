@@ -20,7 +20,7 @@ const NoPrivateMode = () => {
       <main className="welcome-main">
         <h1>Private Browsing Recommended</h1>
 
-        <div className="security-box">
+        <div className="security-box-warning">
           <p className="text-small">
             <strong>Why use private browsing?</strong><br/>
 Private (incognito) mode helps protect your voting privacy by ensuring your session and activity are not saved on your device. The voting system itself never reveals whether you have voted before or how you have voted. However, your browser may otherwise keep traces such as history, cookies, or cached data, which could show that you accessed the voting platform.

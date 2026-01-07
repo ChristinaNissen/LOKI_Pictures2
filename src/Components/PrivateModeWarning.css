@@ -10,14 +10,18 @@
   transition: background 0.2s, color 0.2s, border-bottom-color 0.2s;
   display: inline;
 }
-.security-box{
-  background-color: rgba(255, 255, 204, 0.8); /* Light yellow */
-  border: 2px solid #ffd600;                  /* Dark yellow border */
-  padding: 10px 15px;
-  border-radius: 4px;
-  max-width: 800px;
-  margin: 20px auto;  /* centers the box and adds vertical spacing */
+.security-box-warning{
+   max-width: 700px !important;
+  width: 100% !important;
+  margin: 20px auto !important;
+  background-color: rgba(255, 255, 204, 0.8);
+  border: 2px solid #ffe066;
+  padding: 18px 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   text-align: left;
+  border-radius: 0;
+  box-sizing: border-box !important;
 }
 
 .security-box-warning p strong {
@@ -57,24 +61,24 @@
 }
 
 .study-modal {
-  background: #e3f0ff;
-  border-radius: 16px;
+   background: #e3f0ff;
+  border-radius: 8px;
   border: 2px solid #1976d2;
   box-shadow: 0 4px 24px rgba(25, 118, 210, 0.10);
-  padding: 40px 32px;
-  max-width: 480px;
-  width: 95vw;
-  text-align: center; /* Center text and button */
+  padding: 18px 24px;
+  text-align: center;
   color: #222;
-  font-size: 1.18rem;
+  font-size: 1rem;
+  box-sizing: border-box;
+  max-width: 700px;
+  width: 100%;
+  margin: 20px auto;
 }
 
 .study-modal-static {
   position: static;
   transform: none;
-  margin: 2rem auto;
-  max-width: 600px;
-  width: 90%;
+  
 }
 
 .study-modal h2 {
@@ -104,6 +108,7 @@
   cursor: pointer;
   transition: background 0.2s, color 0.2s;
   min-width: 8rem;
+  margin-top: 0px;
 }
 
 .study-modal .study-button:hover {
