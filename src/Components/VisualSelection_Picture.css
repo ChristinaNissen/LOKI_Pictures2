@@ -1,3 +1,4 @@
+
 .faq-link {
   color: #bfa700;
   font-weight: 500;
@@ -10,6 +11,35 @@
   transition: background 0.2s, color 0.2s, border-bottom-color 0.2s;
   display: inline;
 }
+
+.security-box-selection {
+  max-width: 700px;
+  width: 100%;
+  margin: 20px auto;
+ background-color: rgba(255, 255, 204, 0.8);
+  border: 2px solid #ffe066;
+  padding: 18px 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  text-align: left;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
+.security-box-selection {
+  max-width: 700px;
+  width: 100%;
+  margin: 20px auto;
+   background-color: rgba(255, 255, 204, 0.8);
+  border: 2px solid #ffe066;
+  padding: 18px 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  text-align: left;
+  border-radius: 0;
+  box-sizing: border-box;
+}
+
 .button:disabled {
   background: #eee;
   color: #aaa;
@@ -42,34 +72,31 @@
 
 .visual-select-grid-pictures {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
+  justify-items: center;
+  align-items: start;
 }
 
 /* Fix the size of each grid item */
 .visual-selection-picture {
   box-sizing: border-box;
   position: relative;
-  width: 200px;
+  width: 160px;
   height: auto; /* let it grow for the label */
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   overflow: hidden;
   border: 2px solid #c1bfbfff;
-  box-sizing: border-box;
   transition: box-shadow 0.2s, border-color 0.2s;
   background: #fff;
-  padding-bottom: 0.5em;
+  padding: 0;
+  font-size: 0;
 }
 
-/* Ensure images fill the grid item */
-.visual-selection-picture img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
+/* Remove the global img style that was overriding */
+
 
 /* Hover effect using a pseudo-element overlay */
 .visual-selection-picture::after {
@@ -166,12 +193,26 @@
 }
 
 .picture-label {
-  margin-top: 4px !important;
+  margin: 0 !important;
+  padding: 4px 8px !important;
   font-size: 1.1rem !important;
   font-weight: bold !important;
   text-align: center !important;
   color: #222 !important;
   text-transform: capitalize;
+  min-height: 36px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  line-height: 1.3 !important;
+}
+
+/* Wrapper for visual selection grid - matches filter-card width */
+.visual-selection-grid-container {
+  max-width: 700px;
+  width: 100%;
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* Scrollable container for pictures */
@@ -180,11 +221,12 @@
   overflow-y: auto;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
-  padding: 20px;
+  padding: 20px 24px;
   margin: 0 auto 12px auto;
-  width: 95%;
+  width: 100%;
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+  box-sizing: border-box;
 }
 
 /* Selected count display */
@@ -206,20 +248,38 @@
 /* Wrapper for selected count and scroll instruction */
 .selected-scroll-wrapper {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: flex-start;
+  max-width: 700px;
+  width: 100%;
+  margin-left: 0;
+  margin-right: auto;
+  padding-left: 0px;
+  box-sizing: border-box;
+}
+
+.selected-count-inside {
+  font-size: 1rem;
+  color: #444;
+  background-color: #f7f7f7;
+  padding: 6px 12px;
+  border-radius: 4px;
+  text-align: center;
+  border: 1px solid #d1d5db;
+  white-space: nowrap;
 }
 
 /* Scroll instruction text */
 .scroll-instruction-text {
   text-align: left;
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: #666;
   margin: 0;
   padding: 0;
+  line-height: 1.4;
 }
 
 /* Hide scroll instruction in normal design */
@@ -237,8 +297,24 @@
 
 .picture-img-wrapper {
   width: 100%;
-  height: 170px; /* slightly less than .visual-selection-picture */
+  height: 156px; /* Account for 2px border on top and bottom (160 - 4 = 156) */
   overflow: hidden;
+  display: block;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  line-height: 0;
+  font-size: 0;
+}
+
+.picture-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Show full image without cropping */
+  display: block;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 /* Modal preview: less space below label, label centered in white area */
@@ -762,4 +838,3 @@
     font-size: 0.95rem !important;
   }
 }
-
