@@ -130,17 +130,21 @@
   margin-bottom: 20px;
 }
 
-.security-box {
-  background-color: rgba(255, 255, 204, 0.8); /* Light yellow */
-  border: 2px solid #ffd600;                  /* Dark yellow border */
-  padding: 10px 15px;
-  border-radius: 4px;
-  max-width: 800px;
-  margin: 20px auto;  /* centers the box and adds vertical spacing */
+.security-box-confirmation {
+  max-width: 700px;
+  margin: 20px auto;
+  background-color: rgba(255, 255, 204, 0.8);
+  border: 2px solid #ffe066;
+  padding: 18px 24px;
+  font-size: 1.05rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.03);
   text-align: left;
+  border-radius: 0;
+  box-sizing: border-box;
 }
 
-.security-box p strong {
+
+.security-box-confirmation p strong {
   display: inline !important;
   white-space: normal !important;
   margin: 0 !important;
