@@ -76,13 +76,14 @@ const Welcome = () => {
 					</div>
 				</section>
 			
-				<button
-				style={{ marginTop: "32px" }}
-					className="button"
-					onClick={() => navigate("/private-mode")}
-				>
-					Login to Vote
-				</button>
+				<div className="login-button-container">
+					<button 
+						className="button welcome-button"
+						onClick={() => navigate("/private-mode")}
+					>
+						Login to Vote
+					</button>
+				</div>
 			</main>
 			<Footer />
 		</div>

@@ -1,3 +1,5 @@
+
+
 .login-card {
   background: #fff;
   border-radius: 12px;
@@ -135,12 +137,12 @@
     width: 100%;
     padding: 0 2vw;
     box-sizing: border-box;
-    gap: 4px;
+    gap: 10px;
   }
 
   .login-input {
     width: 100%;
-    font-size: 16px;
+    font-size: 15.52px;
     padding: 10px 8px;
     margin-bottom: 14px;
     border-radius: 6px;
@@ -169,7 +171,7 @@
   }
   
   .login-form label {
-    font-size: 17.6px;
+    font-size: 15.52px;
   }
 
  
@@ -181,8 +183,8 @@
   }
 
   .button-login{
-    width:40%;
-    margin-top: 5px;
+    width:100%!important;
+    margin-top: 0px!important;
     align-items: center;
   }
 }

@@ -502,11 +502,11 @@ const VisualSelectionPicture = () => {
           </div>
           {/* Navigation buttons below */}
           <div className="pagination-buttons" style={{ display: "flex", justifyContent: "center", gap: "16px", marginTop: "16px" }}>
-            <button className="button" onClick={() => setPage(page - 1)} disabled={page === 0}>
-              ← Previous page
+            <button className="button" onClick={() => setPage(page - 1)} disabled={page === 0} aria-label="Previous page">
+              ←
             </button>
-            <button className="button" onClick={() => setPage(page + 1)} disabled={page >= totalPages - 1}>
-              Next page →
+            <button className="button" onClick={() => setPage(page + 1)} disabled={page >= totalPages - 1} aria-label="Next page">
+              →
             </button>
           </div>
         </div>

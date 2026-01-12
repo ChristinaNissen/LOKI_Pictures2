@@ -104,11 +104,13 @@
 }
 
 .next-button-voting {
-    width: 100%;
-    max-width: 350px;
+    width: auto;
+    max-width: 60vw;
     min-width: 120px;
-    margin: 0px auto 0 auto;
+    margin: 0 auto;
     display: block;
+    text-align: center;
+    padding: 12px 24px;
   }
 
 @media (max-width: 600px) {
@@ -237,5 +239,3 @@
   display: block;
   text-align: center;
 }
-
-

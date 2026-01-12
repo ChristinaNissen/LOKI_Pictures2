@@ -51,9 +51,8 @@ const VotedBefore = () => {
         </div>
         <div className="security-box-voted-before">
           <p className="text-small">
-            <strong>Why is this step needed?</strong><br />
-            This step is essential for your security and the integrity of the election. When voting from home or outside a controlled environment, there is a risk that someone could try to influence or pressure you to vote in a certain way. <br></br><br></br>To protect against such coercion attacks, this system is designed to ensure that your vote remains private and free from outside influence. As part of this protection, you are asked to verify whether you have voted before in this election. This helps safeguard your right to vote independently and securely, even outside a polling station.<br /><br />
-            <a href="/help#what-is-coercion" className="faq-link">Read more in the FAQ</a>
+            <strong>Security Feature:</strong><br />
+            For your security and privacy, please select whether you have voted before in this election. This ensures that your vote remains protected and the election process is secure for all voters.
           </p>
         </div>
         <div className="card-wide voted-before" style={{ padding: "40px 20px" }}>
@@ -81,7 +80,7 @@ const VotedBefore = () => {
             </div>
           </div>
         </div>
-          <div style={{ display: "flex", justifyContent: "center", marginTop: 32 }}>
+          <div>
         <button className="button next-voted-before" onClick={handleNext}>
             Next
           </button>
@@ -106,4 +105,3 @@ const VotedBefore = () => {
 };
 
 export default VotedBefore;
-

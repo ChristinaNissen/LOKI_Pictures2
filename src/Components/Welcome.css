@@ -57,7 +57,7 @@
 }
 
 .before-vote-heading {
-  margin-bottom: 8px;
+  margin-bottom: 24px;
   padding-left: 0;
   text-align: left !important;
   font-size: 2rem;
@@ -123,12 +123,13 @@ section.card h2 {
   margin-top: 0;
 }
 
-.info-item p {
+
+.info-item p,.info-item h3 {
   margin-top: 0;
   margin-bottom: 0;
   color: #000;
-  font-size: 17.6px;
   line-height: 1.6;
+  font-size: 17.6px;
 }
 
 .welcome-h2 {
@@ -140,7 +141,7 @@ section.card h2 {
 
 section.card {
   max-width: 500px;
-  margin: 24px auto 0 auto;
+  margin: 0px auto 0 auto;
   background: #fff;
   border-radius: 10px;
   border: 1px solid #ececec;
@@ -238,6 +239,19 @@ section.card:hover {
   border-radius: 1px;
   transition: background-color 0.3s;
 }
+
+.login-button-container{
+    width: 100%;
+  max-width: 800px; /* Match the card-wide max-width */
+    margin: 0px auto 0 auto;
+  padding: 0 20px; /* Side spacing */
+  box-sizing: border-box;
+  align-items:center;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
 @media (max-width: 900px) {
   .welcome-process-step {
     width: 120px;
@@ -249,6 +263,12 @@ section.card:hover {
   }
 }
 @media (max-width: 700px) {
+
+   .button-wrapper {
+    padding: 0 16px;        /* More side padding */
+    margin-top: 24px;       /* More space above buttons */
+  }
+
   .welcome-process-bar-container {
     max-width: 99vw;
   }
@@ -330,6 +350,40 @@ section.card:hover {
   .text-main.text-welcome-main{
     text-align:center !important;
   }
+
+  .before-vote-heading{
+    font-size:22.4px!important;
+  }
+
+  .welcome-button{
+    width: auto !important;
+    max-width: 60vw !important;
+    min-width: 120px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    text-align: center !important;
+    padding: 12px 24px !important;
+    }
+    .login-button-container {
+       padding: 0 16px;        /* More side padding */
+    margin-top: 24px;  
+    }
+    .welcome-button{
+      width: auto !important;
+    max-width: 60vw !important;
+    min-width: 120px !important;
+    margin: 0 auto !important;
+    display: block !important;
+    text-align: center !important;
+    padding: 12px 24px !important;
+    }
+
+  .button.welcome-button:hover {
+    background-color: #ffe066;
+    color: #111;
+  }
+
+  
 }
 
 section.card h2.before-vote-heading {
@@ -385,9 +439,9 @@ section.card h2.before-vote-heading, section.card h2.before-vote-heading * {
   list-style: decimal inside;
   padding-left: 0;
   margin: 0 0 0 0;
-  font-size: 17.6px;
   color: #000;
   line-height: 1.6;
+  font-size: 17.6px;
 }
 .info-list-steps li {
   margin-bottom: 10px;
