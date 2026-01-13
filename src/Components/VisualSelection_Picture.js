@@ -112,7 +112,7 @@ const allImages = [
   img91
 ];
 
-const PAGE_SIZE = 39;
+const PAGE_SIZE = 42;
 
 // Helper function: Fisher-Yates shuffle
 const shuffleArray = (array) => {
@@ -155,7 +155,7 @@ const VisualSelectionPicture = () => {
       letterGroups[letter] = shuffleArray(letterGroups[letter]);
     });
     
-    // Take up to 2 images from each letter to create first page (39 images)
+    // Take up to 2 images from each letter to create first page (42 images)
     const firstPage = [];
     const remaining = [];
     
@@ -168,15 +168,15 @@ const VisualSelectionPicture = () => {
     
     // Second round: take another image from letters that have more
     letters.forEach(letter => {
-      if (letterGroups[letter].length > 0 && firstPage.length < 39) {
+      if (letterGroups[letter].length > 0 && firstPage.length < 42) {
         firstPage.push(letterGroups[letter].shift());
       }
     });
     
-    // If we still need more images to reach 39, keep adding
-    while (firstPage.length < 39) {
+    // If we still need more images to reach 42, keep adding
+    while (firstPage.length < 42) {
       for (let letter of letters) {
-        if (letterGroups[letter].length > 0 && firstPage.length < 39) {
+        if (letterGroups[letter].length > 0 && firstPage.length < 42) {
           firstPage.push(letterGroups[letter].shift());
         }
       }
