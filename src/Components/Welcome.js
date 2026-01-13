@@ -41,7 +41,7 @@ const Welcome = () => {
 	return (
 		<div className="page-wrapper">
 			<main className="welcome-main">
-				<h1>Welcome to The Online Voting System</h1>
+				<h1>Welcome to <br />The Online Voting System</h1>
 				<div className="text-main text-welcome-main">
 					Your secure platform for participating in democratic decision-making
 				</div>
@@ -57,15 +57,37 @@ const Welcome = () => {
 					<section className="card" style={{ maxWidth: "800px", marginBottom: "36px" }}>
 					<div className="info-list">
 						<h2 className="before-vote-heading">How to vote online</h2>
-						<div className="info-item" style={{ padding: 0, border: 'none', textAlign: 'left' }}>
-							<img src={overviewImg} alt="Voting process overview" style={{ width: '100%', borderRadius: '10px', display: 'block', marginBottom: '10px' }} />
-						</div>
+					<div className="info-item overview-image-container">
+						<img src={overviewImg} alt="Voting process overview" className="overview-image" />
+					</div>
+					<ul className="voting-steps-mobile">
+						<li>
+						<strong>Login</strong>
+							<div>Access the system with your credentials</div>
+						</li>
+						<li>
+						<strong>Voted Before?</strong>
+							<div>Answer the question to proceed</div>
+						</li>
+						<li>
+						<strong>Identify Previous Ballots</strong>
+							<div>If yes, select your previous ballot card(s)</div>
+						</li>
+						<li>
+						<strong>Voting</strong>
+							<div>Choose your candidate and cast your ballot</div>
+						</li>
+						<li>
+						<strong>Confirmation</strong>
+							<div>Confirmation with your ballot card</div>
+						</li>
+					</ul>
 					</div>
 				</section>
 
 
 				<section className="card" style={{ maxWidth: "800px" }}>
-					<div className="info-list">
+					<div className="info-list-card">
 						<h2 className="before-vote-heading">Before You Vote</h2>
 						{infoData.map((item, idx) => (
 							<div key={idx} className="info-item">
@@ -81,7 +103,7 @@ const Welcome = () => {
 						className="button welcome-button"
 						onClick={() => navigate("/private-mode")}
 					>
-						Login to Vote
+						Login
 					</button>
 				</div>
 			</main>
