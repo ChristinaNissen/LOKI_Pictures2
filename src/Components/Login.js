@@ -6,8 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa"; // install with: npm install react-icons
 import { addVoter, loginVoter } from '../API/Voter.js'; // Adjust path as needed
 
-
 const Login = ({ setIsLoggedIn }) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const [userID, setUserID] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -15,11 +17,8 @@ const Login = ({ setIsLoggedIn }) => {
   const [passwordError, setPasswordError] = useState("");
   const [showStudyModal, setShowStudyModal] = useState(false);
   const [hasShownModal, setHasShownModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   
   // Secret salt for hashing - in production, this should be in an environment variable
   const SECRET_SALT = "voting_system_secret_2024";
@@ -48,6 +47,7 @@ const Login = ({ setIsLoggedIn }) => {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
+  setIsLoading(true);
   let hasError = false;
 
   if (!userID.trim()) {
@@ -64,51 +64,73 @@ const handleSubmit = async (e) => {
     setPasswordError("");
   }
 
-  if (!hasError) {
-    try {
-      // Hash the UserID and Password before sending to API
-      const hashedUserID = await hashUserID(userID);
-      const hashedPassword = await hashPassword(password);
-      
-      // Try to log in first
-      await loginVoter(hashedUserID, hashedPassword);
-      setIsLoggedIn(true);
-      navigate("/votedbefore");
-    } catch (error) {
-      console.log("Login error code:", error.code, "message:", error.message);
+  if (hasError) {
+    setIsLoading(false);
+    return;
+  }
+
+  try {
+    // Hash the UserID and Password before sending to API
+    const hashedUserID = await hashUserID(userID);
+    const hashedPassword = await hashPassword(password);
+    
+    console.log("Attempting login...");
+    // Try to log in first
+    await loginVoter(hashedUserID, hashedPassword);
+    console.log("Login successful");
+    setIsLoggedIn(true);
+    navigate("/votedbefore");
+  } catch (error) {
+    setIsLoading(false);
+    console.log("Login error:", error);
       // If login fails, try to sign up
-      // Parse error code 101 = Invalid username/password
-      // Parse error code 404 or message includes "not found" = endpoint or user not found
       if (
-        error.code === 101 ||
-        error.code === 404 ||
         error.message.includes("Invalid username/password") ||
         error.message.includes("user not found") ||
-        error.message.includes("Not Found")
+        error.code === 101
       ) {
         try {
+          console.log("Attempting signup...");
           // Hash the UserID and Password before creating account
           const hashedUserID = await hashUserID(userID);
           const hashedPassword = await hashPassword(password);
           // Generate a random 4-digit number
           const random4Digit = Math.floor(1000 + Math.random() * 9000).toString();
           await addVoter(hashedUserID, hashedPassword, random4Digit);
-          // User is automatically logged in after successful signup
-          setIsLoggedIn(true);
-          navigate("/votedbefore");
-        } catch (signupError) {
-          console.log("Signup error:", signupError);
-          if (signupError.message.includes("Account already exists") || signupError.code === 202) {
-            setUserIDError("This user ID is already taken. Please choose another.");
+          console.log("Signup successful");
+          
+          // Verify user is logged in after signup
+          const Parse = require('parse');
+          const currentUser = Parse.User.current();
+          console.log("Current user after signup:", currentUser?.get("username"));
+          console.log("Session token:", currentUser?.getSessionToken());
+          
+          if (currentUser) {
+            setIsLoggedIn(true);
+            navigate("/votedbefore");
           } else {
-            setPasswordError("Login failed. Please try again.");
+            console.error("No current user after signup!");
+            setPasswordError("Signup succeeded but login failed. Please try logging in manually.");
+          }
+        } catch (signupError) {
+          console.error("Signup error:", signupError);
+          if (
+            signupError.message.includes("Account already exists") ||
+            signupError.code === 202
+          ) {
+            setUserIDError("This user ID is already taken. Please choose another.");
+          } else if (signupError.code === 100) {
+            setPasswordError("Connection failed. Please check your internet connection.");
+          } else {
+            setPasswordError(`Login failed: ${signupError.message || "Please try again."}`);
           }
         }
+      } else if (error.code === 100) {
+        setPasswordError("Connection failed. Please check your internet connection.");
       } else {
-        setPasswordError("Login failed. Please try again.");
+        setPasswordError(`Login failed: ${error.message || "Please try again."}`);
       }
     }
-  }
 };
 
   return (
@@ -161,8 +183,15 @@ const handleSubmit = async (e) => {
           </div>
             {passwordError && <div className="login-error">{passwordError}</div>}
 
-            <button type="submit" className="button button-login">
-              Login
+            <button type="submit" className="button button-login" disabled={isLoading}>
+              {isLoading ? (
+                <div className="spinner-container">
+                  <div className="spinner"></div>
+                  <span>Logging in...</span>
+                </div>
+              ) : (
+                "Login"
+              )}
             </button>
           </form>
         </div>
