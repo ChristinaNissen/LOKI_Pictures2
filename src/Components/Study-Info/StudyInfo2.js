@@ -123,7 +123,7 @@ const StudyInfo2 = () => {
           onClick={async () => {
             await logoutVoter();
             window.location.href =
-              "https://www.survey-xact.dk/LinkCollector?key=T5JG3UXLJ215";
+              "https://www.survey-xact.dk/LinkCollector?key=T5JG3UXLJ215&condition=4.0&longvarnames=";
           }}
         >
           Go to survey
