@@ -197,7 +197,7 @@ const handleSubmit = async (e) => {
         </div>
 
         {showStudyModal && (
-          <div className="study-modal-backdrop" onClick={() => setShowStudyModal(false)}>
+          <div className="study-modal-backdrop">
             <div className="study-modal" onClick={(e) => e.stopPropagation()}>
               <h2>Study Information</h2>
               <p>

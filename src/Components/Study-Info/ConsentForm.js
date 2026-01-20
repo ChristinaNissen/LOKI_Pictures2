@@ -49,18 +49,13 @@ const ConsentForm = () => {
           before completion in Prolific, see this link:{" "}
           <a
             className="info-link"
-            href="https://participant-help.prolific.co/hc/en-gb/articles/360022342094-How-do-I-withdraw-my-participation-in-a-study"
+            href="https://participant-help.prolific.com/en/articles/445041-how-to-return-a-submission-on-prolific"
             target="_blank"
             rel="noopener noreferrer"
           >
-            https://participant-help.prolific.co/hc/en-gb/articles/360022342094-How-do-I-withdraw-my-participation-in-a-study
+            https://participant-help.prolific.com/en/articles/445041-how-to-return-a-submission-on-prolific
           </a>
-          . Please note that we cannot delete your data after you have completed
-          the study, since the data we collect is anonymised and we therefore
-          have no chance to identify you (unless you choose to disclose
-          identifying information about yourself when using the voting system or
-          answering the questionnaire, in which case your data will be
-          anonymised as described below).
+          After completing the study, you may still request to have your data deleted until 14 days after submitting the survey by contacting the researhers and provide your Prolific ID, which allows us to locate and remove your data. After this deadline, it will no longer be possible to delete your data.
         </p>
         <h3 className="title-margin-top">Compensation</h3>
         <p>
@@ -94,8 +89,9 @@ const ConsentForm = () => {
         </p>
         <h3 className="title-margin-top">How we use the data</h3>
         <p>
+          We collect and process your data for research purposes under the public interest legal basis. 
           These data will be used to derive statistical measures of users'
-          attitudes towards internet voting systems. The data might be
+          attitudes towards internet voting systems, as well as qualitative insights from open-ended responses.. The data might be
           referenced or quoted, but not printed in full unless it is completely
           anonymized, in the published research reports and other academic
           publications.

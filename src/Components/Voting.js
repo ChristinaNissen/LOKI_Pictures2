@@ -26,7 +26,7 @@ const Voting = () => {
   const [error, setError] = useState("");
   const [showConfirm, setShowConfirm] = useState(false);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -53,7 +53,7 @@ const Voting = () => {
       // If candidate is empty, just save the new vote
       if (!existingCandidate || existingCandidate === "") {
         await saveVote(candidateName);
-        navigate("/confirmation", { state: { votedCandidate: candidateName } });
+        navigate("/confirmation", { state: { votedCandidate: candidateName }, replace: true });
       } else {
         // If candidate exists, check if correct selections is true
         const correctSelections = await getBooleanSelection();
@@ -61,17 +61,17 @@ const Voting = () => {
         if (correctSelections === true) {
           // Update the vote if correct selections is true
           await saveVote(candidateName);
-          navigate("/confirmation", { state: { votedCandidate: candidateName } });
+          navigate("/confirmation", { state: { votedCandidate: candidateName }, replace: true });
         } else {
           // Keep existing candidate, don't update
-          navigate("/confirmation", { state: { votedCandidate: existingCandidate } });
+          navigate("/confirmation", { state: { votedCandidate: existingCandidate }, replace: true });
         }
       }
     } catch (error) {
       console.error("Error handling vote confirmation:", error);
       // Fallback: save the vote anyway
       await saveVote(candidateName);
-      navigate("/confirmation", { state: { votedCandidate: candidateName } });
+      navigate("/confirmation", { state: { votedCandidate: candidateName }, replace: true });
     }
   };
 

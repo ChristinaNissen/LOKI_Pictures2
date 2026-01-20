@@ -200,6 +200,9 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
       <li>
         You should <strong>not share</strong> your picture with anyone, and you should <strong>not save</strong> it anywhere.
       </li>
+      <li>
+        If you forget this card, you will <strong>NOT be able to update your vote</strong> later in the election.
+      </li>
     </ul>
   </div>
           <img
@@ -235,9 +238,9 @@ function BallotConfirmationPicture2(setIsLoggedIn) {
   <div className="modal-backdrop-confirmation">
     <div className="modal-confirmation">
       <p style={{ fontSize: "18px", fontWeight: "bold" }}>Are you sure you want to log out?</p>
-      <p>
-        When you log out, you will not be able to view your picture again.<br />
-        Make sure you have memorised your picture before proceeding.
+       <p>
+        When you log out, you will not be able to view your card again.<br />
+        If you forget your card, you will <strong>NOT be able to update your vote</strong> later in the election.
       </p>
       <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "16px" }}>
         <button className="button" onClick={handleLogout}>Yes</button>

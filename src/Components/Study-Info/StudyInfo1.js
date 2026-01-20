@@ -6,7 +6,6 @@ import { downloadFile } from "../../util";
 
 const StudyInfo1 = () => {
   const [checked, setChecked] = useState(false);
-  const [downloaded, setDownloaded] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
@@ -20,7 +19,6 @@ const StudyInfo1 = () => {
     e.preventDefault();
     e.stopPropagation();
     downloadFile(Instructions, "General-Election-2023.pdf");
-    setDownloaded(true);
   };
 
   const handleStart = (e) => {
@@ -31,7 +29,7 @@ const StudyInfo1 = () => {
     }, 500);
   };
 
-  const startDisabled = !(checked && downloaded) || isSubmitting;
+  const startDisabled = !checked || isSubmitting;
 
   return (
     <div className="study-center-bg">
@@ -66,17 +64,13 @@ const StudyInfo1 = () => {
           <div className="step-row">
             <div className="step-number">2</div>
             <div className="step-content">
-              <strong>
+            
                 Please download the instructions which you need to follow to complete the General Election 2025.
-              </strong>
-              <p>
+         
+              
                 In a real election you would get these instructions as a physical or digital letter by the election authorities.
-              </p>
-              <p className="text-margin-top">
-                <span className="blue-bg-highlight">
-                  Make sure that you can access the letter throughout the study.
-                </span>
-              </p>
+            
+            
               <button
                 type="button"
                 onClick={downloadInstructions}
