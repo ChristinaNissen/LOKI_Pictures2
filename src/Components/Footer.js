@@ -1,5 +1,6 @@
 import React from "react";
 import "./Footer.css";
+import Logo from "../Assets/logo.jpg";
 
 const Footer = () => (
   <footer className="footer">
@@ -34,21 +35,21 @@ const Footer = () => (
       <div className="footer-section">
         <h4>CONTACT</h4>
         <ul>
-          <li>National Election Commission</li>
-          <li>Christiansborg 1<br/>1218 Copenhagen K<br/>Denmark</li>
-          <li>Phone: +45 00 00 00 00</li>
-          <li>contact@election.gov.dk</li>
+          <li>Election Commission</li>
+          <li>123 Main Street<br/>City, Postal Code</li>
+          <li>Phone: +X XXX XXX XXXX</li>
+          <li>contact@election.gov</li>
         </ul>
       </div>
     </div>
     <div className="footer-bottom">
       <div className="footer-logo">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Coat_of_Arms_of_Denmark.svg"
+          src={Logo}
           alt="Agency Logo"
         />
         <span>AGENCY FOR ONLINE VOTING</span>
-        <span className="footer-portal">Official Danish Election Portal</span>
+        <span className="footer-portal">Official Election Portal</span>
       </div>
       <div className="footer-copyright">
         © 2025 National Election Commission. All rights reserved.

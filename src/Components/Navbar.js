@@ -3,6 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { MdHelpOutline, MdHome } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import "./Navbar.css";
+import Logo from "../Assets/logo.jpg";
+
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const navigate = useNavigate();
@@ -32,7 +34,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
       {/* Left side: the logo */}
       <div className="navbar-logo">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Coat_of_Arms_of_Denmark.svg"
+          src={Logo}
           alt="Agency Logo"
         />
         <span>Agency for Online Voting</span>
