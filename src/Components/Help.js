@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Help.css";
 import "./Voting-system.css";
 import "./Welcome.css"; // Assuming Welcome.css defines the chevron icons
 import Footer from "./Footer";
+import { incrementHelpVisitCounter } from "../API/Voter";
 
 const helpSections = [
   {
@@ -294,6 +295,17 @@ const helpSections = [
 
 
 const Help = () => {
+  // Prevent double increment in development (e.g., React Strict Mode)
+  const hasIncremented = useRef(false);
+  useEffect(() => {
+    if (!hasIncremented.current) {
+      incrementHelpVisitCounter().catch((err) => {
+        // Optionally handle/log error
+        console.error("Failed to increment Help page visit counter:", err);
+      });
+      hasIncremented.current = true;
+    }
+  }, []);
 	// Manage open/close state per FAQ item.
 	const [openItems, setOpenItems] = useState(() => {
 	const initial = {};

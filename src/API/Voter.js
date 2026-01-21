@@ -149,3 +149,37 @@ export async function getBooleanSelection() {
     return null;
   }
 }
+
+
+// Increment Help_Visit_Counter for the current user
+export async function incrementHelpVisitCounter() {
+  const user = Parse.User.current();
+  if (!user) {
+    throw new Error("No user is currently logged in");
+  }
+  try {
+    let currentCount = user.get("Help_Visit_Counter") || 0;
+    user.set("Help_Visit_Counter", currentCount + 1);
+    await user.save();
+    return user.get("Help_Visit_Counter");
+  } catch (error) {
+    console.error("Error incrementing user's Help_Visit_Counter:", error);
+    throw error;
+  }
+}
+
+// Set Session_End to current date for the current user
+export async function setSessionEnd() {
+  const user = Parse.User.current();
+  if (!user) {
+    throw new Error("No user is currently logged in");
+  }
+  try {
+    user.set("Session_End", new Date());
+    await user.save();
+    return true;
+  } catch (error) {
+    console.error("Error setting Session_End:", error);
+    throw error;
+  }
+}
