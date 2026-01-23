@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import Footer from "./Footer";
 import "./Welcome.css";
-import votingIllustration from "../Assets/landingpage_banner.png";
+import votingIllustration from "../Assets/Banner.png";
 import overviewImg from "../Assets/Picture.png";
 
 const infoData = [
